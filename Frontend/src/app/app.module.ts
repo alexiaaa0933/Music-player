@@ -12,6 +12,7 @@ import{MatIconModule} from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: 
@@ -29,7 +30,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     MatSliderModule,
     MatTooltipModule,
  FormsModule,
- ReactiveFormsModule
+ ReactiveFormsModule,
+ HttpClientModule
   ],
   providers: [
     provideAnimationsAsync()

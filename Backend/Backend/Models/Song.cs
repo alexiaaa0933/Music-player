@@ -8,5 +8,9 @@
         public string Title { get; set; }
         public string Author { get; set; }
         public string Genre { get; set; }
+        public int Likes { get; set; }
+        public int Duration { get; set; } 
+
+
     }
 }

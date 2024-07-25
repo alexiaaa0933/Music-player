@@ -17,15 +17,12 @@ export class AudioPlayerComponent {
 
   onPlay(): void {
     this.buttonPlay = !this.buttonPlay;
-    console.log(this.durationToDisplay)
-    var timeDiff = this.duration - this.start;
-    this.durationToDisplay = this.durationToString(this.duration);
-    timeDiff /= 1000;
 
+    this.durationToDisplay = this.durationToString(this.duration);
     if (!this.buttonPlay) {
       console.log(this.value);
       this.interval = setInterval(() => {
-        this.value = parseFloat((this.value + 1).toFixed(1));
+        this.value = parseFloat((this.value + 1).toFixed(0));
         this.valueToDisplay = this.durationToString(this.value);
         if (this.value >= this.duration) {
           this.value = this.duration;
@@ -36,6 +33,12 @@ export class AudioPlayerComponent {
       }, 1000);
     }
 
+  }
+  onStop():void{
+    this.stop();
+  
+    this.valueToDisplay = this.durationToString(this.value);
+    this.buttonPlay = !this.buttonPlay;
   }
   stop(): void {
     if (this.interval) {

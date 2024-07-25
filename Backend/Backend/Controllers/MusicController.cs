@@ -7,7 +7,7 @@ namespace Backend.Controllers
     [Route("api/[controller]")]
     public class MusicController : ControllerBase
     {
-        private readonly string _musicDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Music");
+        private readonly string musicDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Music");
 
         private static List<Song> _songs = new List<Song>();
 
@@ -18,7 +18,7 @@ namespace Backend.Controllers
 
         private void InitializeSongs()
         {
-            var files = Directory.GetFiles(_musicDirectory, "*.mp3");
+            var files = Directory.GetFiles(musicDirectory, "*.mp3");
 
             foreach (var file in files)
             {
@@ -50,7 +50,7 @@ namespace Backend.Controllers
         [HttpGet("stream/{fileName}")]
         public IActionResult StreamFile(string fileName)
         {
-            var filePath = Path.Combine(_musicDirectory, fileName);
+            var filePath = Path.Combine(musicDirectory, fileName);
             if (!System.IO.File.Exists(filePath))
             {
                 return NotFound();
@@ -80,6 +80,50 @@ namespace Backend.Controllers
                 return Ok();
             }
             return NotFound();
+        }
+        [HttpGet("byAuthor")]
+        public IActionResult getSongsByAuthor(string author)
+        {
+            var files = Directory.GetFiles(musicDirectory, "*.mp3");
+
+            var authorFiles = files.Select(file =>
+            {
+                var tagFile = TagLib.File.Create(file);
+                return new Song
+                {
+                    FileName = Path.GetFileName(file),
+                    CreationDate = System.IO.File.GetCreationTime(file),
+                    Album = tagFile.Tag.Album,
+                    Title = tagFile.Tag.Title,
+                    Author = tagFile.Tag.FirstPerformer ?? string.Join(", ", tagFile.Tag.Performers),
+                    Genre = tagFile.Tag.FirstGenre
+                };
+            }).Where(song => song.Author != null &&
+            song.Author.Contains(author, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+            return Ok(authorFiles);
+        }
+        [HttpGet("byAlbum")]
+        public IActionResult getSongsByAlbum(string album)
+        {
+            var files = Directory.GetFiles(musicDirectory, "*.mp3");
+
+            var authorFiles = files.Select(file =>
+            {
+                var tagFile = TagLib.File.Create(file);
+                return new Song
+                {
+                    FileName = Path.GetFileName(file),
+                    CreationDate = System.IO.File.GetCreationTime(file),
+                    Album = tagFile.Tag.Album,
+                    Title = tagFile.Tag.Title,
+                    Author = tagFile.Tag.FirstPerformer ?? string.Join(", ", tagFile.Tag.Performers),
+                    Genre = tagFile.Tag.FirstGenre
+                };
+            }).Where(song => song.Album != null &&
+            song.Album.Contains(album, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+            return Ok(authorFiles);
         }
     }
 }

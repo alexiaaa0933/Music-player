@@ -63,49 +63,21 @@ namespace Backend.Controllers
                 EnableRangeProcessing = true
             };
         }
-        [HttpGet("byAuthor")]
+        [HttpGet("byAuthor/{author}")]
         public  IActionResult getSongsByAuthor(string author)
         {
-            var files = Directory.GetFiles(_musicDirectory, "*.mp3");
-
-            var authorFiles = files.Select(file =>
-            {
-                var tagFile = TagLib.File.Create(file);
-                return new Song
-                {
-                    FileName = Path.GetFileName(file),
-                    CreationDate = System.IO.File.GetCreationTime(file),
-                    Album = tagFile.Tag.Album,
-                    Title = tagFile.Tag.Title,
-                    Author = tagFile.Tag.FirstPerformer ?? string.Join(", ", tagFile.Tag.Performers),
-                    Genre = tagFile.Tag.FirstGenre
-                };
-            }).Where(song => song.Author != null &&
+          var authorFiles=_songs.Where(song => song.Author != null &&
             song.Author.Contains(author, StringComparison.OrdinalIgnoreCase))
             .ToList();
             return Ok(authorFiles);
         }
-        [HttpGet("byAlbum")]
+        [HttpGet("byAlbum/{album}")]
         public IActionResult getSongsByAlbum(string album)
         {
-            var files = Directory.GetFiles(_musicDirectory, "*.mp3");
-
-            var authorFiles = files.Select(file =>
-            {
-                var tagFile = TagLib.File.Create(file);
-                return new Song
-                {
-                    FileName = Path.GetFileName(file),
-                    CreationDate = System.IO.File.GetCreationTime(file),
-                    Album = tagFile.Tag.Album,
-                    Title = tagFile.Tag.Title,
-                    Author = tagFile.Tag.FirstPerformer ?? string.Join(", ", tagFile.Tag.Performers),
-                    Genre = tagFile.Tag.FirstGenre
-                };
-            }).Where(song => song.Album != null &&
+           var albumFiles=_songs.Where(song => song.Album != null &&
             song.Album.Contains(album, StringComparison.OrdinalIgnoreCase))
             .ToList();
-            return Ok(authorFiles);
+            return Ok(albumFiles);
         }
 
         [HttpGet("top-liked")]

@@ -4,9 +4,9 @@
     <img src={{song.imageUrl}}>
     <div class="mainDetails">
         <span class="songName">{{song.songName}}</span>
-        <span class="author">{{song.author}}</span>
+        <span class="author" (click)="onArtistClick(song)" >{{song.author}}</span>
     </div>
-    <p class="album">{{song.album}}</p>
+    <p class="album" (click)="onAlbumClick(song)">{{song.album}}</p>
     <p class="creationDate">{{song.creationDate | date: 'mediumDate'}}</p>
     <p class="duration">{{getFormattedDuration(song.duration)}}</p>
 </div>

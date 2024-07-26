@@ -6,9 +6,6 @@ import { AudioPlayerComponent } from '../audio-player/audio-player.component';
 
 import { Router } from '@angular/router';
 
-
-
-
 @Component({
   selector: 'app-display-list',
   templateUrl: './display-list.component.html',
@@ -21,39 +18,8 @@ export class DisplayListComponent implements OnInit {
   songList: Song[] = [];
   currentSong!: Song;
   errorMessage: string | null = null;
-
-  playSong(song: Song): void {
-    this.currentSong = song;
-    this.audioPlayerComponent.currentSong = song;
-    this.audioPlayerComponent.loadSong(song.fileName);
-  }
-
-  onSongChanged(song: Song): void {
-    this.currentSong = song;
-  }
-
-  getNextSong(): Song | null {
-    const index = this.songList.indexOf(this.currentSong) + 1;
-    return index < this.songList.length ? this.songList[index] : null;
-  }
-
-  getPreviousSong(): Song | null {
-    const index = this.songList.indexOf(this.currentSong) - 1;
-    return index >= 0 ? this.songList[index] : null;
-  }
-
-  onNextSongRequested(): void {
-    const nextSong = this.getNextSong();
-    if (nextSong) {
-      this.playSong(nextSong);
-    }
-  }
-
-  onPreviousSongRequested(): void {
-    const previousSong = this.getPreviousSong();
-    if (previousSong) {
-      this.playSong(previousSong);
-    }}
+  filteredItems: Song[] = [];
+  searchTerm: string = '';
 
   constructor(private songService: SongsServiceService, private router: Router) { }
 
@@ -61,12 +27,13 @@ export class DisplayListComponent implements OnInit {
     this.songService.getSongs().subscribe(
       songs => {
         this.songList = songs;
+        this.filteredItems = this.songList;
       },
       error => {
         this.errorMessage = error.error?.message;
       }
     );
-    
+
     //   this.songList = [
     //   {
     //     songName: 'Blinding Lights',
@@ -192,12 +159,51 @@ export class DisplayListComponent implements OnInit {
 
   }
 
+  onSearch() {
+    this.filteredItems = this.songList.filter(item =>
+      item.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
+  playSong(song: Song): void {
+    this.currentSong = song;
+    this.audioPlayerComponent.currentSong = song;
+    this.audioPlayerComponent.loadSong(song.fileName);
+  }
+
+  onSongChanged(song: Song): void {
+    this.currentSong = song;
+  }
+
+  getNextSong(): Song | null {
+    const index = this.filteredItems.indexOf(this.currentSong) + 1;
+    return index < this.filteredItems.length ? this.filteredItems[index] : null;
+  }
+
+  getPreviousSong(): Song | null {
+    const index = this.filteredItems.indexOf(this.currentSong) - 1;
+    return index >= 0 ? this.filteredItems[index] : null;
+  }
+
+  onNextSongRequested(): void {
+    const nextSong = this.getNextSong();
+    if (nextSong) {
+      this.playSong(nextSong);
+    }
+  }
+
+  onPreviousSongRequested(): void {
+    const previousSong = this.getPreviousSong();
+    if (previousSong) {
+      this.playSong(previousSong);
+    }
+  }
+
   getFormattedDuration(duration: number): string {
     const minutes = Math.floor(duration / 60);
     const seconds = duration % 60;
     return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
-
 
   onLikeSong(song: Song, event: Event): void {
     event.stopPropagation();
@@ -209,13 +215,15 @@ export class DisplayListComponent implements OnInit {
       }
     }, error => {
       console.error('Error liking song', error);
-    });}
+    });
+  }
 
   onAlbumClick(song: Song): void {
 
     this.router.navigate(['/album', song.album]);
     this.songService.getSelectedAlbum(song);
   }
+
   onArtistClick(song: Song): void {
     this.router.navigate(['/artist', song.author]);
 

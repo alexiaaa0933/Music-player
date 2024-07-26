@@ -26,11 +26,24 @@ export class SongsServiceService {
   getSongs(): Observable<Song[]> {
     return this.httpClient.get<Song[]>(this.baseUrl + "/api/Music/list", this.httpOptions);
   }
+
+
+  getSongStream(fileName: string): Observable<Blob> {
+    return this.httpClient.get(`${this.baseUrl}/api/Music/stream/${fileName}`, {
+      ...this.httpOptions,
+      responseType: 'blob'
+    });
+  }
+
+  likeSong(fileName: string): Observable<Song> {
+    return this.httpClient.post<Song>(`${this.baseUrl}/api/Music/like/${fileName}`, {}, this.httpOptions);
+
   getSongsByAlbum(album: string): Observable<Song[]> {
     return this.httpClient.get<Song[]>(this.baseUrl + "/api/Music/byAlbum/"+album, this.httpOptions);
   }
   getSelectedAlbum(select:Song)
   {
     this.selectedAlbumS.next(select);
+
   }
 }

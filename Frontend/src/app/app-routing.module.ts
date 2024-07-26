@@ -5,12 +5,8 @@ import { DisplayListComponent } from './components/display-list/display-list.com
 import { AlbumPageComponent } from './components/album-page/album-page.component';
 import { ArtistTop5Component } from './components/artist-top-5/artist-top-5.component';
 
-const routes: Routes = [{
-  path: "audio-player",
-  component: AudioPlayerComponent
-
-
-},
+const routes: Routes = [
+  { path: 'player/:fileName', component: AudioPlayerComponent },
 {
   path:"display-list",
   component:DisplayListComponent

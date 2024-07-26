@@ -1,4 +1,5 @@
-﻿using Backend.Models;
+﻿using Backend.Exceptions;
+using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -45,6 +46,10 @@ namespace Backend.Controllers
         [HttpGet("list")]
         public IActionResult ListFiles()
         {
+            if(_songs.Count == 0)
+            {
+                throw new NoAvailableSongsException();
+            }
             return Ok(_songs);
         }
 
@@ -54,7 +59,7 @@ namespace Backend.Controllers
             var filePath = Path.Combine(_musicDirectory, fileName);
             if (!System.IO.File.Exists(filePath))
             {
-                return NotFound();
+                throw new SongNotFoundException(fileName);
             }
 
             var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
@@ -63,49 +68,42 @@ namespace Backend.Controllers
                 EnableRangeProcessing = true
             };
         }
-        [HttpGet("byAuthor")]
-        public IActionResult getSongsByAuthor(string author)
-        {
-            var files = Directory.GetFiles(_musicDirectory, "*.mp3");
 
-            var authorFiles = files.Select(file =>
-            {
-                var tagFile = TagLib.File.Create(file);
-                return new Song
-                {
-                    FileName = Path.GetFileName(file),
-                    CreationDate = System.IO.File.GetCreationTime(file),
-                    Album = tagFile.Tag.Album,
-                    Title = tagFile.Tag.Title,
-                    Author = tagFile.Tag.FirstPerformer ?? string.Join(", ", tagFile.Tag.Performers),
-                    Genre = tagFile.Tag.FirstGenre
-                };
-            }).Where(song => song.Author != null &&
+
+        [HttpGet("byAuthor/{author}")]
+
+        public  IActionResult getSongsByAuthor(string author)
+        {
+          var authorFiles=_songs.Where(song => song.Author != null &&
             song.Author.Contains(author, StringComparison.OrdinalIgnoreCase))
             .ToList();
+
+            if(authorFiles.Count == 0)
+            {
+                throw new NoSongsByAuthorException(author);
+            }
+
             return Ok(authorFiles);
         }
-        [HttpGet("byAlbum")]
+
+        [HttpGet("byAlbum/{album}")]
+
         public IActionResult getSongsByAlbum(string album)
         {
-            var files = Directory.GetFiles(_musicDirectory, "*.mp3");
-
-            var authorFiles = files.Select(file =>
-            {
-                var tagFile = TagLib.File.Create(file);
-                return new Song
-                {
-                    FileName = Path.GetFileName(file),
-                    CreationDate = System.IO.File.GetCreationTime(file),
-                    Album = tagFile.Tag.Album,
-                    Title = tagFile.Tag.Title,
-                    Author = tagFile.Tag.FirstPerformer ?? string.Join(", ", tagFile.Tag.Performers),
-                    Genre = tagFile.Tag.FirstGenre
-                };
-            }).Where(song => song.Album != null &&
+           var albumFiles=_songs.Where(song => song.Album != null &&
             song.Album.Contains(album, StringComparison.OrdinalIgnoreCase))
             .ToList();
-            return Ok(authorFiles);
+
+            if (albumFiles.Count == 0)
+            {
+                throw new NoSongsByAlbumException(album);
+            }
+
+            return Ok(albumFiles);
+
+
+
+
         }
 
         [HttpGet("top-liked")]
@@ -131,7 +129,10 @@ namespace Backend.Controllers
 
                 return Ok(song);    
             }
-            return NotFound();
+            else
+            {
+                throw new SongNotFoundException(fileName);
+            }
         }
 
         private (bool IsSuccess, string ErrorMessage) UpdateMetadataForSong(Song song)

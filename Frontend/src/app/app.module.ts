@@ -13,13 +13,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HttpClientModule } from '@angular/common/http';
+import { AlbumPageComponent } from './components/album-page/album-page.component';
+import { ArtistTop5Component } from './components/artist-top-5/artist-top-5.component';
 
 @NgModule({
   declarations: 
   [
     AppComponent,
     DisplayListComponent,
-    AudioPlayerComponent
+    AudioPlayerComponent,
+    AlbumPageComponent,
+    ArtistTop5Component
   ],
   imports: [
     BrowserModule,

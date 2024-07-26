@@ -1,26 +1,26 @@
 <div class="media-footer">
   <div class="button-row">
     <div class="button-play-label">
+      <p *ngIf="currentSong">{{ currentSong.title}}</p>
       <button mat-button class="skip-btn">
-        <mat-icon mat-list-icon>skip_previous</mat-icon>
+        <mat-icon mat-list-icon (click)="playPreviousSong()">skip_previous</mat-icon>
       </button>
 
       <button mat-button (click)="buttonPlay? onPlay():onStop()" class="play-stop-btn">
         <mat-icon mat-list-icon>{{buttonPlay?'play_arrow':'pause'}}</mat-icon>
       </button>
       <button mat-button class="skip-btn">
-        <mat-icon mat-list-icon>skip_next</mat-icon>
+        <mat-icon mat-list-icon (click)="playNextSong()">skip_next</mat-icon>
       </button>
     </div>
   </div>
-  <span style="color:white" matTooltip="{{ valueToDisplay }}" matTooltipPosition="after">
+  <span class="current-time" matTooltip="{{ valueToDisplay }}" matTooltipPosition="after">
     {{ valueToDisplay }}
   </span>
-  <mat-slider [min]="min" [max]="duration" [step]="0.1">
+  <mat-slider [min]="min" [max]="duration" [step]="0.1" (input)="onInputChange($event)">
     <input matSliderThumb [(ngModel)]="value">
   </mat-slider>
-  <span style="color:white" matTooltip="{{ durationToDisplay }}" matTooltipPosition="after">
+  <span class="duration" matTooltip="{{ durationToDisplay }}" matTooltipPosition="after">
     {{ durationToDisplay }}
   </span>
-
 </div>

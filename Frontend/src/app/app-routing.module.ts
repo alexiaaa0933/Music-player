@@ -3,12 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AudioPlayerComponent } from './components/audio-player/audio-player.component';
 import { DisplayListComponent } from './components/display-list/display-list.component';
 
-const routes: Routes = [{
-  path: "audio-player",
-  component: AudioPlayerComponent
-
-
-},
+const routes: Routes = [
+  { path: 'player/:fileName', component: AudioPlayerComponent },
 {
   path:"display-list",
   component:DisplayListComponent

@@ -35,8 +35,8 @@ namespace Backend.Controllers
                         Title = tagFile.Tag.Title,
                         Author = tagFile.Tag.FirstPerformer ?? string.Join(", ", tagFile.Tag.Performers),
                         Genre = tagFile.Tag.FirstGenre,
-                        Duration = (int)tagFile.Properties.Duration.TotalSeconds, 
-                        Likes = 0 
+                        Duration = (int)tagFile.Properties.Duration.TotalSeconds,
+                        Likes = (int)tagFile.Tag.TrackCount
                     });
                 }
             }
@@ -64,7 +64,7 @@ namespace Backend.Controllers
             };
         }
         [HttpGet("byAuthor")]
-        public  IActionResult getSongsByAuthor(string author)
+        public IActionResult getSongsByAuthor(string author)
         {
             var files = Directory.GetFiles(_musicDirectory, "*.mp3");
 
@@ -122,9 +122,36 @@ namespace Backend.Controllers
             if (song != null)
             {
                 song.Likes++;
-                return Ok();
+                var updateResult = UpdateMetadataForSong(song);
+
+                if (!updateResult.IsSuccess)
+                {
+                    return StatusCode(500, updateResult.ErrorMessage);
+                }
+
+                return Ok(song);    
             }
             return NotFound();
+        }
+
+        private (bool IsSuccess, string ErrorMessage) UpdateMetadataForSong(Song song)
+        {
+            var filePath = Path.Combine(_musicDirectory, song.FileName);
+            if (System.IO.File.Exists(filePath))
+            {
+                try
+                {
+                    var file = TagLib.File.Create(filePath);
+                    file.Tag.TrackCount = (uint)song.Likes;
+                    file.Save();
+                    return (true, string.Empty);
+                }
+                catch (Exception ex)
+                {
+                    return (false, $"Internal server error: {ex.Message}");
+                }
+            }
+            return (false, "Song file not found.");
         }
     }
 }

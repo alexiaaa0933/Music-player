@@ -101,3 +101,9 @@ img
     border-radius: 5px;
 }
 
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%; 
+}
+

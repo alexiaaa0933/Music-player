@@ -1,61 +1,113 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { SongsServiceService } from '../../services/songs-service.service';
+import { Song } from '../../Interfaces/Song';
 
 @Component({
   selector: 'app-audio-player',
   templateUrl: './audio-player.component.html',
-  styleUrl: './audio-player.component.scss'
+  styleUrls: ['./audio-player.component.scss']
 })
-export class AudioPlayerComponent {
+export class AudioPlayerComponent implements OnInit {
+  @Output() songChanged: EventEmitter<Song> = new EventEmitter();
+  @Output() requestNextSong: EventEmitter<void> = new EventEmitter();
+  @Output() requestPreviousSong: EventEmitter<void> = new EventEmitter();
+  
+  @Input() currentSong!: Song;
+
   buttonPlay: boolean = true;
   duration: number = 60;
   durationToDisplay: string = '';
   valueToDisplay: string = '';
   min: number = 0;
   value: number = 0;
-  start: number = 0;
   interval: any;
+  audio = new Audio();
+
+  constructor(private songService: SongsServiceService) { }
+
+  ngOnInit(): void {}
+
+  loadSong(fileName: string): void {
+    this.buttonPlay = false;
+    this.songService.getSongStream(fileName).subscribe(blob => {
+      const url = URL.createObjectURL(blob);
+      this.audio.src = url;
+      this.audio.load();
+      this.audio.play();
+      this.audio.onloadedmetadata = () => {
+        this.duration = this.audio.duration;
+        this.min = 0;
+        this.durationToDisplay = this.durationToString(this.duration);
+      };
+      this.audio.ontimeupdate = () => {
+        this.value = this.audio.currentTime;
+        this.valueToDisplay = this.durationToString(this.value);
+      };
+    }, error => {
+      console.error('Error loading song', error);
+    });
+  }
 
   onPlay(): void {
-    this.buttonPlay = !this.buttonPlay;
-
-    this.durationToDisplay = this.durationToString(this.duration);
-    if (!this.buttonPlay) {
-      console.log(this.value);
-      this.interval = setInterval(() => {
-        this.value = parseFloat((this.value + 1).toFixed(0));
-        this.valueToDisplay = this.durationToString(this.value);
-        if (this.value >= this.duration) {
-          this.value = this.duration;
-          this.valueToDisplay = this.durationToString(this.value);
-          this.stop();
-
-        }
-      }, 1000);
+    if (this.buttonPlay) {
+      this.audio.play();
+      this.buttonPlay = false;
+      this.startUpdatingSlider();
+    } else {
+      this.audio.pause();
+      this.buttonPlay = true;
+      this.stopUpdatingSlider();
     }
+  }
 
+  private startUpdatingSlider(): void {
+    this.interval = setInterval(() => {
+      this.value = this.audio.currentTime;
+      this.valueToDisplay = this.durationToString(this.value);
+
+      if (this.audio.ended) {
+        this.stop();
+        this.playNextSong();
+      }
+    }, 1000);
   }
-  onStop():void{
-    this.stop();
-  
-    this.valueToDisplay = this.durationToString(this.value);
-    this.buttonPlay = !this.buttonPlay;
-  }
-  stop(): void {
+
+  private stopUpdatingSlider(): void {
     if (this.interval) {
-      console.log(this.value);
       clearInterval(this.interval);
       this.interval = null;
     }
   }
+
+  stop(): void {
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = null;
+    }
+  }
+
+  onStop(): void {
+    this.stop();
+    this.buttonPlay = true;
+    this.audio.pause();
+  }
+
   onInputChange(event: any): void {
-    this.value = event.value;
-    console.log(this.value);
+    this.audio.currentTime = this.value;
   }
 
   durationToString(duration: number): string {
-    const minutes = Math.floor(duration / 60);
-    const seconds = duration % 60;
+    const roundedDuration = Math.round(duration);
+    const minutes = Math.floor(roundedDuration / 60);
+    const seconds = roundedDuration % 60;
     return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
 
+  playNextSong(): void {
+    this.requestNextSong.emit();
+  }
+
+  playPreviousSong(): void {
+    this.requestPreviousSong.emit();
   }
 }

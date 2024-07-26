@@ -1,0 +1,134 @@
+.album-banner{
+    color:white;
+    background: rgb(2,0,36);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(32,32,91,1) 100%, rgba(0,212,255,1) 100%);
+    display: flex;
+    max-height: 40%;
+    
+    padding:2%;
+    
+    .album-poster{
+        max-width:20%;
+        
+      
+        max-height: 20%;
+    
+    }
+   
+    .album-info  {
+        display: flex;
+        flex-direction: column;
+        justify-content:flex-end;
+        padding:2%;
+      p{
+        padding:0;
+        margin:0;
+      }   
+
+    }
+    .album-album{
+       height: fit-content;
+    }
+    .album-title{
+        font-size: 2em;
+        font-weight: bold;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        height: fit-content;
+    }
+    .album-artist{
+        height: fit-content;
+        font-size: 1em;
+        font-weight: bold;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+}
+.album-tracks{
+    color:white;
+}
+$spotify-dark: #121212;
+$spotify-light: #FFFFFF;
+$spotify-gray: #B3B3B3;
+
+.songDisplay {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+  color: $spotify-gray;
+  background-color: $spotify-dark;
+  text-align: left;
+  font-family:  'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 14px;
+  overflow: hidden;
+  height: 85px;
+
+  &:hover {
+    background-color: #2a2a2a;
+    border-radius: 5px;
+  }
+
+  @media (max-width: 800px) {
+    padding: 10px;
+    flex-wrap: nowrap;
+    overflow-x: auto; 
+  }
+}
+.author{
+    padding:10%;
+    width: 100px;
+}
+.mainDetails {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding:2%;
+    width: 400px;
+  
+    
+    @media (max-width: 800px) {
+      flex: 3;
+      min-width: auto;
+      padding-right: 10px;
+    }
+  }
+  
+  .songName
+  {
+    color: $spotify-light;
+    font-size: 16px;
+  }
+  
+  .album {
+    flex: 2;
+    color: $spotify-gray;
+    text-align: left;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  
+    @media (max-width: 800px) {
+      display: none;
+    }
+  }
+  
+  .creationDate {
+    flex: 1;
+    color: $spotify-gray;
+    text-align: left;
+  
+    @media (max-width: 800px) {
+      display: none;
+    }
+  }
+  
+  .duration {
+    flex:3; 
+    text-align: right;
+    align-items: flex-end;
+    color: $spotify-gray;
+    padding:20%;
+  
+   
+  }

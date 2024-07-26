@@ -67,6 +67,7 @@ $spotify-gray: #B3B3B3;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
 
   @media (max-width: 800px) {
     display: none;

@@ -1,25 +1,26 @@
 .album-banner{
+  
     color:white;
     background: rgb(2,0,36);
-background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(32,32,91,1) 100%, rgba(0,212,255,1) 100%);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(76,172,130,1) 100%, rgba(0,212,255,1) 100%);
     display: flex;
-    max-height: 40%;
+    max-height: 30%;
     
     padding:2%;
     
     .album-poster{
-        max-width:20%;
-        
-      
-        max-height: 20%;
-    
+        max-width:15%;
+        max-height: 15%;
+        object-fit: fill;
+        border-radius: 10%;
     }
    
     .album-info  {
         display: flex;
         flex-direction: column;
         justify-content:flex-end;
-        padding:2%;
+    
+        padding: 1%;
       p{
         padding:0;
         margin:0;
@@ -30,13 +31,14 @@ background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(32,32,91,1) 100%, rgb
        height: fit-content;
     }
     .album-title{
-        font-size: 2em;
+        font-size: 2.5em;
         font-weight: bold;
         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         height: fit-content;
     }
     .album-artist{
         height: fit-content;
+        width: fit-content;
         font-size: 1em;
         font-weight: bold;
         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -75,7 +77,7 @@ $spotify-gray: #B3B3B3;
 }
 .author{
     padding:10%;
-    width: 100px;
+    width: 200px;
 }
 .mainDetails {
     display: flex;

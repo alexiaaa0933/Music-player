@@ -52,7 +52,9 @@ $spotify-gray: #B3B3B3;
     padding-right: 10px;
   }
 }
-
+.author{
+  cursor: pointer;
+}
 .songName
 {
   color: $spotify-light;

@@ -93,15 +93,15 @@ namespace Backend.Controllers
             song.Album.Contains(album, StringComparison.OrdinalIgnoreCase))
             .ToList();
 
-            return Ok(albumFiles);
-
-
-            if(authorFiles.Count == 0)
+            if (albumFiles.Count == 0)
             {
                 throw new NoSongsByAlbumException(album);
             }
 
-            return Ok(authorFiles);
+            return Ok(albumFiles);
+
+
+
 
         }
 

@@ -1,4 +1,5 @@
-﻿using Backend.Models;
+﻿using Backend.Exceptions;
+using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -45,6 +46,10 @@ namespace Backend.Controllers
         [HttpGet("list")]
         public IActionResult ListFiles()
         {
+            if(_songs.Count == 0)
+            {
+                throw new NoAvailableSongsException();
+            }
             return Ok(_songs);
         }
 
@@ -54,7 +59,7 @@ namespace Backend.Controllers
             var filePath = Path.Combine(_musicDirectory, fileName);
             if (!System.IO.File.Exists(filePath))
             {
-                return NotFound();
+                throw new SongNotFoundException(fileName);
             }
 
             var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
@@ -63,6 +68,7 @@ namespace Backend.Controllers
                 EnableRangeProcessing = true
             };
         }
+
         [HttpGet("byAuthor")]
         public  IActionResult getSongsByAuthor(string author)
         {
@@ -83,8 +89,15 @@ namespace Backend.Controllers
             }).Where(song => song.Author != null &&
             song.Author.Contains(author, StringComparison.OrdinalIgnoreCase))
             .ToList();
+
+            if(authorFiles.Count == 0)
+            {
+                throw new NoSongsByAuthorException(author);
+            }
+
             return Ok(authorFiles);
         }
+
         [HttpGet("byAlbum")]
         public IActionResult getSongsByAlbum(string album)
         {
@@ -105,6 +118,12 @@ namespace Backend.Controllers
             }).Where(song => song.Album != null &&
             song.Album.Contains(album, StringComparison.OrdinalIgnoreCase))
             .ToList();
+
+            if(authorFiles.Count == 0)
+            {
+                throw new NoSongsByAlbumException(album);
+            }
+
             return Ok(authorFiles);
         }
 
@@ -124,7 +143,10 @@ namespace Backend.Controllers
                 song.Likes++;
                 return Ok();
             }
-            return NotFound();
+            else
+            {
+                throw new SongNotFoundException(fileName);
+            }
         }
     }
 }

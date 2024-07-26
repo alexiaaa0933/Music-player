@@ -18,12 +18,9 @@ import { Router } from '@angular/router';
 export class DisplayListComponent implements OnInit {
   @ViewChild('audioPlayer') audioPlayerComponent!: AudioPlayerComponent;
 
-
-
-
-
   songList: Song[] = [];
   currentSong!: Song;
+  errorMessage: string | null = null;
 
   playSong(song: Song): void {
     this.currentSong = song;
@@ -61,9 +58,15 @@ export class DisplayListComponent implements OnInit {
   constructor(private songService: SongsServiceService, private router: Router) { }
 
   ngOnInit(): void {
-    this.songService.getSongs().subscribe(x => this.songList = x);
-    console.log(this.songList);
-
+    this.songService.getSongs().subscribe(
+      songs => {
+        this.songList = songs;
+      },
+      error => {
+        this.errorMessage = error.error?.message;
+      }
+    );
+    
     //   this.songList = [
     //   {
     //     songName: 'Blinding Lights',

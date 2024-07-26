@@ -1,21 +1,20 @@
 
 <div class="page-container">
   <div class="songListContainer">
-    <div *ngFor="let song of songList; let i = index" class="songDisplay" (click)="playSong(song)">
+    <div *ngFor="let song of songList; let i = index" class="songDisplay">
       <p class="index">{{ i + 1 }}</p>
-      <img src='https://i.pinimg.com/564x/94/fe/aa/94feaab7c012474e771e8b281a234a1d.jpg'>
+      <img src='https://i.pinimg.com/564x/94/fe/aa/94feaab7c012474e771e8b281a234a1d.jpg' (click)="playSong(song)">
       <div class="mainDetails">
         <span class="songName">{{ song.title }}</span>
         <span class="author">{{ song.author }}</span>
       </div>
-      <p class="album">{{ song.album }}</p>
+      <p class="album" (click)="onAlbumClick(song)">{{ song.album }}</p>
       <p class="creationDate">{{ song.creationDate | date: 'mediumDate' }}</p>
       <button (click)="onLikeSong(song, $event)">Like</button>
       <p class="creationDate">{{song.likes}}</p>
       <p class="duration">{{ getFormattedDuration(song.duration) }}</p>
     </div>
   </div>
-
   <app-audio-player
     #audioPlayer
     [currentSong]="currentSong"

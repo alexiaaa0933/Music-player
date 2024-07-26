@@ -19,18 +19,11 @@ export class DisplayListComponent implements OnInit {
   @ViewChild('audioPlayer') audioPlayerComponent!: AudioPlayerComponent;
 
 
-export class DisplayListComponent implements OnInit {
+
 
 
   songList: Song[] = [];
   currentSong!: Song;
-
-
-  constructor(private songService: SongsServiceService) { }
-
-  ngOnInit(): void {
-    this.songService.getSongs().subscribe(x => this.songList = x);
-  }
 
   playSong(song: Song): void {
     this.currentSong = song;
@@ -63,7 +56,7 @@ export class DisplayListComponent implements OnInit {
     const previousSong = this.getPreviousSong();
     if (previousSong) {
       this.playSong(previousSong);
-    }
+    }}
 
   constructor(private songService: SongsServiceService, private router: Router) { }
 
@@ -213,7 +206,7 @@ export class DisplayListComponent implements OnInit {
       }
     }, error => {
       console.error('Error liking song', error);
-    });
+    });}
 
   onAlbumClick(song: Song): void {
 

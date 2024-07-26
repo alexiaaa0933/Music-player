@@ -1,7 +1,7 @@
 <div class="songListContainer">
 <div *ngFor="let song of songList; let i = index " class = "songDisplay">
     <p class="index">{{i+1}}</p>
-    <img src={{song.imageUrl}}>
+    <img src='https://i.pinimg.com/564x/94/fe/aa/94feaab7c012474e771e8b281a234a1d.jpg'>
     <div class="mainDetails">
         <span class="songName">{{song.songName}}</span>
         <span class="author" (click)="onArtistClick(song)" >{{song.author}}</span>

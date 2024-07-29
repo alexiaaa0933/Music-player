@@ -3,6 +3,8 @@ import { Song } from '../../Interfaces/Song';
 import { SongsServiceService } from '../../services/songs-service.service';
 import { AudioPlayerComponent } from '../audio-player/audio-player.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { LoginServiceService } from '../../services/login-service.service';
 
 @Component({
   selector: 'app-display-list',
@@ -17,12 +19,16 @@ export class DisplayListComponent implements OnInit {
   errorMessage: string | null = null;
   filteredItems: Song[] = [];
   searchTerm: string = '';
+  // unlinkedIcon: string = 'https://logowik.com/content/uploads/images/like-heart2255.logowik.com.webp';
+  // likedIcon: string = 'https://cdn.vectorstock.com/i/500p/58/88/flat-heart-icon-vector-30695888.jpg';
+  addSongInPlaylistIcon: string = '+';
+  removeSongFromPlaylistIcon: string = '-';
   // unlikedImageUrl: string = 'https://logowik.com/content/uploads/images/like-heart2255.logowik.com.webp';
   // likedImageUrl: string = 'https://cdn.vectorstock.com/i/500p/58/88/flat-heart-icon-vector-30695888.jpg';
   unlikedIcon: string = 'favorite_border';
   likedIcon: string = 'favorite';
 
-  constructor(private songService: SongsServiceService, private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private songService: SongsServiceService, private router: Router, private activatedRoute: ActivatedRoute, private logInService: LoginServiceService) { }
 
   ngOnInit(): void {
     this.songService.getSongs().subscribe(
@@ -30,6 +36,7 @@ export class DisplayListComponent implements OnInit {
         this.songList = songs;
         this.filteredItems = this.songList;
         this.initializeLikes();
+        this.initializePlaylistButtons();
       },
       error => {
         this.errorMessage = error.error?.message;
@@ -105,6 +112,14 @@ export class DisplayListComponent implements OnInit {
       updatedSong => {
         updatedSong.isLiked = song.isLiked;
         this.updateSongInLists(updatedSong);
+        this.logInService.updateSongInUserPlaylist(currentEmail, updatedSong).subscribe(
+          () => {
+            console.log('Song updated in user playlist successfully');
+          },
+          updateError => {
+            console.error('Error updating song in user playlist', updateError);
+          }
+        );     
       },
       error => {
         console.error('Error liking song', error);
@@ -131,6 +146,16 @@ export class DisplayListComponent implements OnInit {
     this.songService.getSelectedAlbum(song);
   }
 
+  onPlayListClick(){
+    const currentEmail = this.activatedRoute.snapshot.paramMap.get('email');
+    if (!currentEmail) {
+      console.error('Current email not found in route parameters');
+      return;
+    }
+    this.router.navigate(['/playlist', currentEmail]);
+    // this.logInService.getSongs(currentEmail);
+  }
+
   onArtistClick(song: Song): void {
     this.router.navigate(['/artist', song.author]);
     this.songService.getSelectedArtist(song);
@@ -145,8 +170,54 @@ export class DisplayListComponent implements OnInit {
     }
   }
 
+  initializePlaylistButtons() {
+    const currentEmail = this.activatedRoute.snapshot.paramMap.get('email');
+  
+    if (!currentEmail) {
+      console.error('Current email not found in route parameters');
+      return;
+    }
+  
+    this.logInService.getSongs(currentEmail).subscribe(
+      userSongs => {
+        this.songList.forEach(song => {
+          const isInPlaylist = userSongs.some(userSong => userSong.fileName === song.fileName);
+          song.isAddedToPlaylist = isInPlaylist;
+        });
+      },
+      error => {
+        this.errorMessage = error.error?.message || 'Error retrieving songs';
+      }
+    );
+  }
+  
+
   getImageUrl(song: Song): string {
     return song.isLiked ? this.likedIcon : this.unlikedIcon;
   }
 
+  addSongToUserPlaylist(newSong: Song): void {
+    const currentEmail = this.activatedRoute.snapshot.paramMap.get('email');
+
+    if (!currentEmail) {
+      console.error('Current email not found in route parameters');
+      return;
+    }
+
+    newSong.isAddedToPlaylist = !newSong.isAddedToPlaylist;
+    this.updateSongInLists(newSong);
+
+    this.logInService.addSongToUserPlaylist(currentEmail, newSong).subscribe(
+      (response) => {
+        console.log('Song added to playlist successfully', response);
+      },
+      (error) => {
+        console.error('Error adding song to playlist', error);
+      }
+    );
+  }
+
+  getPlaylistButtonIcon(song: Song): string {
+    return song.isAddedToPlaylist ? this.removeSongFromPlaylistIcon : this.addSongInPlaylistIcon;
+  }
 }

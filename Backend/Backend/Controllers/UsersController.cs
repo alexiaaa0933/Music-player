@@ -28,6 +28,23 @@ namespace Backend.Controllers
             return Ok(_users);
         }
 
+        [HttpGet("user")]
+        public IActionResult GetUserByEmail([FromQuery] string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return BadRequest("Email parameter is required.");
+            }
+
+            var user = _users.FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            return Ok(user);
+        }
+
         [HttpPut("addUser")]
         public IActionResult AddUser([FromBody] User newUser)
         {
@@ -45,6 +62,76 @@ namespace Backend.Controllers
             _users.Add(newUser);
             SaveUsersToFile(_usersFilePath, _users);
             return Ok(newUser);
+        }
+
+
+        [HttpPost("addSongToUserPlaylist/{email}")]
+        public IActionResult AddSongToUserPlaylist(string email, [FromBody] Song newSong)
+        {
+            if (string.IsNullOrEmpty(email) || newSong == null)
+            {
+                return BadRequest("Invalid request data.");
+            }
+
+            var user = _users.FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var songInPlaylist = user.Playlist.FirstOrDefault(s => s.FileName.Equals(newSong.FileName, StringComparison.OrdinalIgnoreCase));
+            if (songInPlaylist != null)
+            {
+                user.Playlist.Remove(songInPlaylist);
+            }
+            else
+            {
+                user.Playlist.Add(newSong);
+            }
+
+            SaveUsersToFile(_usersFilePath, _users);
+
+            return Ok(newSong);
+        }
+
+
+        [HttpGet("userPlaylist/{email}")]
+        public IActionResult GetUserPlaylist(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return BadRequest("Email parameter is required.");
+            }
+
+            var user = _users.FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            return Ok(user.Playlist);
+        }
+
+        [HttpPost("updateSongInUserPlaylist/{email}")]
+        public IActionResult UpdateSongInUserPlaylist(string email, [FromBody] Song updatedSong)
+        {
+            if (updatedSong == null)
+            {
+                return BadRequest("Invalid request data.");
+            }
+
+            foreach (var usr in _users)
+            {
+                var songInPlaylistIndex = usr.Playlist.FindIndex(s => s.FileName.Equals(updatedSong.FileName, StringComparison.OrdinalIgnoreCase));
+                if (songInPlaylistIndex != -1)
+                {
+                    usr.Playlist[songInPlaylistIndex] = updatedSong;
+                }
+            }
+
+            SaveUsersToFile(_usersFilePath, _users);
+
+            return Ok(updatedSong);
         }
 
 

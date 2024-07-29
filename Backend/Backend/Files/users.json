@@ -2,21 +2,37 @@
   {
     "Name": "Alex",
     "Email": "mail@mail.com",
-    "Password": "Asdfghjkl9"
+    "Password": "Asdfghjkl9",
+    "Playlist": [
+      {
+        "FileName": "Post Malone, Swae Lee - Sunflower (Spider-Man_ Into the Spider-Verse).mp3",
+        "CreationDate": "2024-07-29T12:47:59.4072181+03:00",
+        "Album": "Spider-Man: Into the Spider-Verse (Soundtrack)",
+        "Title": "Sunflower",
+        "Author": "Post Malone and Swae Lee",
+        "Genre": "Hip-Hop",
+        "Likes": 3,
+        "Duration": 161,
+        "UsersWhoLiked": []
+      }
+    ]
   },
   {
     "Name": "salut",
     "Email": "alex@mail.com",
-    "Password": "Asdfghjkl9"
+    "Password": "Asdfghjkl9",
+    "Playlist": []
   },
   {
     "Name": "salut",
     "Email": "sss@mail",
-    "Password": "Asdfghjkl9"
+    "Password": "Asdfghjkl9",
+    "Playlist": []
   },
   {
     "Name": "Alexia",
     "Email": "a@a.a",
-    "Password": "Aaaaaa12"
+    "Password": "Aaaaaa12",
+    "Playlist": []
   }
 ]

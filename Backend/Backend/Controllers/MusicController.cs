@@ -1,6 +1,8 @@
-﻿using Backend.Exceptions;
+﻿using System.Xml;
+using Backend.Exceptions;
 using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Backend.Controllers
 {
@@ -28,6 +30,10 @@ namespace Backend.Controllers
 
                 if (existingSong == null)
                 {
+                    var usersWhoLiked = tagFile.Tag.Comment != null
+                        ? tagFile.Tag.Comment.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList()
+                        : new List<string>();
+
                     _songs.Add(new Song
                     {
                         FileName = Path.GetFileName(file),
@@ -37,16 +43,18 @@ namespace Backend.Controllers
                         Author = tagFile.Tag.FirstPerformer ?? string.Join(", ", tagFile.Tag.Performers),
                         Genre = tagFile.Tag.FirstGenre,
                         Duration = (int)tagFile.Properties.Duration.TotalSeconds,
-                        Likes = (int)tagFile.Tag.TrackCount
+                        Likes = (int)tagFile.Tag.TrackCount,
+                        UsersWhoLiked = usersWhoLiked
                     });
                 }
             }
         }
 
+
         [HttpGet("list")]
         public IActionResult ListFiles()
         {
-            if(_songs.Count == 0)
+            if (_songs.Count == 0)
             {
                 throw new NoAvailableSongsException();
             }
@@ -72,13 +80,13 @@ namespace Backend.Controllers
 
         [HttpGet("byAuthor/{author}")]
 
-        public  IActionResult getSongsByAuthor(string author)
+        public IActionResult getSongsByAuthor(string author)
         {
-          var authorFiles=_songs.Where(song => song.Author != null &&
-            song.Author.Contains(author, StringComparison.OrdinalIgnoreCase))
-            .ToList();
+            var authorFiles = _songs.Where(song => song.Author != null &&
+              song.Author.Contains(author, StringComparison.OrdinalIgnoreCase))
+              .ToList();
 
-            if(authorFiles.Count == 0)
+            if (authorFiles.Count == 0)
             {
                 throw new NoSongsByAuthorException(author);
             }
@@ -90,9 +98,9 @@ namespace Backend.Controllers
 
         public IActionResult getSongsByAlbum(string album)
         {
-           var albumFiles=_songs.Where(song => song.Album != null &&
-            song.Album.Contains(album, StringComparison.OrdinalIgnoreCase))
-            .ToList();
+            var albumFiles = _songs.Where(song => song.Album != null &&
+             song.Album.Contains(album, StringComparison.OrdinalIgnoreCase))
+             .ToList();
 
             if (albumFiles.Count == 0)
             {
@@ -100,10 +108,6 @@ namespace Backend.Controllers
             }
 
             return Ok(albumFiles);
-
-
-
-
         }
 
         [HttpGet("top-liked")]
@@ -114,12 +118,22 @@ namespace Backend.Controllers
         }
 
         [HttpPost("like/{fileName}")]
-        public IActionResult LikeSong(string fileName)
+        public IActionResult LikeSong(string fileName, [FromBody] string userEmail)
         {
             var song = _songs.FirstOrDefault(s => s.FileName.Equals(fileName, System.StringComparison.OrdinalIgnoreCase));
             if (song != null)
             {
-                song.Likes++;
+                if (!song.UsersWhoLiked.Contains(userEmail))
+                {
+                    song.UsersWhoLiked.Add(userEmail);
+                    song.Likes++;
+                }
+                else
+                {
+                    song.UsersWhoLiked.Remove(userEmail);
+                    song.Likes--;
+                }
+
                 var updateResult = UpdateMetadataForSong(song);
 
                 if (!updateResult.IsSuccess)
@@ -127,13 +141,14 @@ namespace Backend.Controllers
                     return StatusCode(500, updateResult.ErrorMessage);
                 }
 
-                return Ok(song);    
+                return Ok(song);
             }
             else
             {
                 throw new SongNotFoundException(fileName);
             }
         }
+
 
         private (bool IsSuccess, string ErrorMessage) UpdateMetadataForSong(Song song)
         {
@@ -144,6 +159,7 @@ namespace Backend.Controllers
                 {
                     var file = TagLib.File.Create(filePath);
                     file.Tag.TrackCount = (uint)song.Likes;
+                    file.Tag.Comment = string.Join(",", song.UsersWhoLiked);
                     file.Save();
                     return (true, string.Empty);
                 }
@@ -154,5 +170,8 @@ namespace Backend.Controllers
             }
             return (false, "Song file not found.");
         }
+
+        
+
     }
 }

@@ -7,5 +7,6 @@ export interface Song
   duration: number,
   imageUrl: string,
   fileName: string;
-  likes: number;
+  likes: number,
+  usersWhoLiked: string[]
 }

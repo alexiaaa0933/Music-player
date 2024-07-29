@@ -1,0 +1,40 @@
+<div class="main-container">
+  <div class="registration-container">
+    <div class="registration-box">
+      <img src='https://i.pinimg.com/564x/94/fe/aa/94feaab7c012474e771e8b281a234a1d.jpg' alt="Spotify Logo" class="logo">
+      <form #registrationForm="ngForm" (ngSubmit)="onSubmit(registrationForm)">
+        <div class="form-group">
+          <input type="text" id="name" name="name" placeholder="Name" [(ngModel)]="formData.name" required pattern="^[a-zA-Z\s]*$" minlength="3" #name="ngModel">
+          <div *ngIf="name.invalid && (name.dirty || name.touched)">
+            <div class="error-text" *ngIf="name.errors?.['required']">Name is required.</div>
+            <div class="error-text" *ngIf="name.errors?.['pattern']">Name must not contain numbers.</div>
+            <div class="error-text" *ngIf="name.errors?.['minlength']">Name must be at least 3 characters long.</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="email" id="email" name="email" placeholder="Email" [(ngModel)]="formData.email" required email #email="ngModel">
+          <div *ngIf="email.invalid && (email.dirty || email.touched)">
+            <div class="error-text" *ngIf="email.errors?.['required']">Email is required.</div>
+            <div class="error-text" *ngIf="email.errors?.['email']">Invalid email format.</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="password" id="password" name="password" placeholder="Password" [(ngModel)]="formData.password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" #password="ngModel">
+          <div *ngIf="password.invalid && (password.dirty || password.touched)">
+            <div class="error-text" *ngIf="password.errors?.['required']">Password is required.</div>
+            <div class="error-text" *ngIf="password.errors?.['pattern']">Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" [(ngModel)]="formData.confirmPassword" required #confirmPassword="ngModel">
+          <div *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)">
+            <div class="error-text" *ngIf="confirmPassword.errors?.['required']">Confirm password is required.</div>
+            <div class="error-text" *ngIf="formData.confirmPassword !== formData.password">Passwords must match.</div>
+          </div>
+        </div>
+        <button type="submit" [disabled]="registrationForm.invalid">SIGN UP</button>
+        <div *ngIf="errorMessage" class="error-text">{{ errorMessage }}</div>
+      </form>
+    </div>
+  </div>
+</div>

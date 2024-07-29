@@ -1,0 +1,141 @@
+body {
+  background-color: #1DB954;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.login-box {
+  background-color: #191414;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 300px;
+}
+
+.logo {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+.nav {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+.nav li {
+  display: inline;
+}
+
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 4px;
+  width: 90%;
+}
+
+.password-container {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6d6d6d;
+  z-index: 1; 
+
+}
+
+.toggle-password:focus {
+  outline: none;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  color: #fff;
+  font-size: 14px;
+}
+
+.button-login {
+  background-color: #1DB954;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.button-login:hover {
+  background-color: #1ed760;
+}
+
+.forgot-password {
+  display: block;
+  margin-top: 20px;
+  color: #b3b3b3;
+  font-size: 14px;
+  text-decoration: none;
+  background: none;
+  margin-left: 60px;
+  border: none;
+}
+
+.forgot-password:hover {
+  background-color: #1ed75f00;
+}
+
+.main-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #005994;
+}
+
+.error-text{
+  color: #fff;
+}
+.password-bo{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  justify-content: first baseline;
+}

@@ -1,0 +1,35 @@
+<div class="main-container">
+  <div class="login-container">
+    <div class="login-box">
+      <img src='https://i.pinimg.com/564x/94/fe/aa/94feaab7c012474e771e8b281a234a1d.jpg' alt="Spotify Logo"
+        class="logo">
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+        <div class="form-group">
+          <input type="email" id="email" name="email" placeholder="Email" [(ngModel)]="loginData.email" required email
+            #email="ngModel">
+          <div *ngIf="email.invalid && (email.dirty || email.touched)">
+            <div class="error-text" *ngIf="email.errors?.['required']">Email is required.</div>
+            <div class="error-text" *ngIf="email.errors?.['email']">Invalid email format.</div>
+          </div>
+        </div>
+        <div class="form-group password-container">
+          <div class="password-box">
+            <input [type]="passwordFieldType" id="password" name="password" placeholder="Password"
+              [(ngModel)]="loginData.password" required minlength="8" #password="ngModel">
+            <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+              <i [ngClass]="passwordFieldType === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+            </button>
+          </div>
+          <div *ngIf="password.invalid && (password.dirty || password.touched)">
+            <div class="error-text" *ngIf="password.errors?.['required']">Password is required.</div>
+            <div class="error-text" *ngIf="password.errors?.['minlength']">Password must be at least 8 characters long.
+            </div>
+          </div>
+        </div>
+        <button class="button-login" type="submit" [disabled]="loginForm.invalid">LOG IN</button>
+      </form>
+      <div *ngIf="errorMessage" class="error-text">{{ errorMessage }}</div>
+      <button class="forgot-password" routerLink="/register">Don't have an account?</button>
+    </div>
+  </div>
+</div>

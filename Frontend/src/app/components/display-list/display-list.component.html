@@ -6,7 +6,7 @@
         <button mat-button >
           <mat-icon mat-list-icon (click)="onPlayListClick()" class="archive">archive</mat-icon>
         </button>
-    </div>
+    </div><br><br>
     <div *ngIf="filteredItems.length > 0">
       <div *ngFor="let song of filteredItems; let i = index" class="songDisplay">
         <p class="index">{{ i + 1 }}</p>

@@ -225,4 +225,5 @@ export class DisplayListComponent implements OnInit {
   getPlaylistButtonIcon(song: Song): string {
     return song.isAddedToPlaylist ? this.removeSongFromPlaylistIcon : this.addSongInPlaylistIcon;
   }
+
 }

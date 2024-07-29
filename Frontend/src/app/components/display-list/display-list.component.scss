@@ -12,7 +12,6 @@ $spotify-gray: #B3B3B3;
   text-align: left;
   font-family: Arial;
   font-size: 14px;
-  overflow:auto;
   height: 85px;
 
   &:hover {
@@ -106,7 +105,7 @@ img {
 .page-container {
   display: flex;
   flex-direction: column;
-  min-height: 95%;
+  min-height: 90%;
   justify-content: space-around;
 }
 
@@ -147,13 +146,20 @@ img {
   left: 0;
   position: fixed;
 }
-.like-button{
+.like-button {
   background: none;
   border: none;
   color: #f1f1f1;
-  font-size: xx-large;
   cursor: pointer;
-  margin-left: 5%;
+  font-size: 18px; 
+  transition: background-color 0.3s, transform 0.3s; 
+}
+
+.like-button:hover {
+  margin-right: 5px;
+  border-radius: 50%;
+  background-color: #424242;
+  transform: scale(1.1); 
 }
 .add-playlist-button{
   background: none;
@@ -166,8 +172,25 @@ img {
 .add-playlist-button:hover{
   border-radius: 50%;
   background-color: #424242;
+  width: 45px;
 }
-.like-button:hover{
-  border-radius: 50%;
-  background-color: #424242;
+.songListContainer{
+  display: flex;
+  flex-direction: column;
+}
+.mat-mdc-button {
+  min-height: 55px;
+  min-width: 55px;
+  :hover{
+    border-radius: 50%;
+  }
+}
+.archive{
+  padding-left: 10px;
+  margin-left: 5px;
+  min-height: 20px;
+  min-width: 20px;
+  :hover{
+    border-radius: 50%;
+  }
 }

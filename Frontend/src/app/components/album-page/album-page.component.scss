@@ -32,6 +32,7 @@ background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(76,172,130,1) 100%, r
     }
     .album-title{
         font-size: 2.5em;
+        
         font-weight: bold;
         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         height: fit-content;
@@ -62,6 +63,7 @@ $spotify-gray: #B3B3B3;
   font-family:  'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: 14px;
   overflow: hidden;
+  padding-left: 2%;
   height: 85px;
 
   &:hover {
@@ -76,7 +78,7 @@ $spotify-gray: #B3B3B3;
   }
 }
 .author{
-    padding:10%;
+    
     width: 200px;
 }
 .mainDetails {
@@ -126,11 +128,54 @@ $spotify-gray: #B3B3B3;
   }
   
   .duration {
-    flex:3; 
+    flex:1; 
     text-align: right;
     align-items: flex-end;
     color: $spotify-gray;
-    padding:20%;
+    padding:2%;
   
    
+  }
+  .author-songs{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .button-banner{
+    display: flex;
+    align-items: center;
+    background-color: $spotify-dark;
+    color: $spotify-light;
+   padding:0;
+   margin: 0;
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  
+    cursor: pointer;
+    &:hover{
+      background-color: #2a2a2a;
+    }
+  }
+  .play-btn{
+    background: transparent;
+    border: none;
+    mat-icon {
+      font-size: 30px;
+      color:$spotify-light;
+      width: fit-content;
+      height: fit-content; 
+      padding: 10%;
+
+    }
+  
+  }
+  .play-btn:hover{
+    background-color: transparent
+  }
+  .play-phrase{
+    font-size: 1em;
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color:$spotify-light;
+    
   }

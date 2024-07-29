@@ -65,7 +65,7 @@ $spotify-gray: #B3B3B3;
   overflow: hidden;
   padding-left: 2%;
   height: 85px;
-
+ 
   &:hover {
     background-color: #2a2a2a;
     border-radius: 5px;
@@ -130,7 +130,7 @@ $spotify-gray: #B3B3B3;
   .duration {
     flex:1; 
     text-align: right;
-    align-items: flex-end;
+    
     color: $spotify-gray;
     padding:2%;
   

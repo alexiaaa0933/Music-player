@@ -237,6 +237,7 @@ export class DisplayListComponent implements OnInit {
 
   onArtistClick(song: Song): void {
     this.router.navigate(['/artist', song.author]);
+    this.songService.getSelectedArtist(song);
 
   }
 }

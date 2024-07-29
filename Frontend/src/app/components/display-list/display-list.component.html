@@ -10,7 +10,7 @@
         <img src='https://i.pinimg.com/564x/94/fe/aa/94feaab7c012474e771e8b281a234a1d.jpg' (click)="playSong(song)">
         <div class="mainDetails">
           <span class="songName">{{ song.title }}</span>
-          <span class="author">{{ song.author }}</span>
+          <span class="author" (click)="onArtistClick(song)">{{ song.author }}</span>
         </div>
         <p class="album" (click)="onAlbumClick(song)">{{ song.album }}</p>
         <p class="creationDate">{{ song.creationDate | date: 'mediumDate' }}</p>

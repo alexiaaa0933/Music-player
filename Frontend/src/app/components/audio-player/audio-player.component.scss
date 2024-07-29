@@ -1,64 +1,127 @@
+// Culori Spotify
+$spotify-dark: #121212;
+$spotify-light: #FFFFFF;
+$spotify-gray: #B3B3B3;
+$spotify-green: #1db954;
+
 .media-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: $spotify-dark;
+  color: $spotify-gray;
+  height: 100px;
+  width: 98%;
+  padding: 10px 20px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+
+  .button-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background-color: #121212; 
-    color: #b3b3b3; 
-    height: 60px;
-    width: 98%;
-    padding: 0 20px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.5); 
-    z-index: 1000;
-  
-    .button-row {
-      display: flex;
-      align-items: center;
-      flex: 1;
-    }
-  
-    .button-play-label {
-      display: flex;
-      align-items: center;
-    }
-  
-    .skip-btn, .play-stop-btn {
-      background: transparent;
-      border: none;
-      color: #b3b3b3;
-      cursor: pointer;
-  
-      mat-icon {
-        font-size: 24px;
-      }
-    }
-  
-    .current-time, .duration {
-      font-size: 14px;
-      color: #b3b3b3;
-    }
-  
-    mat-slider {
-      flex: 1;
-      margin: 0 10px;
-      
-      .mat-slider-thumb {
-        background: #b3b3b3;
-      }
-  
-      .mat-slider-track-fill {
-        background: #b3b3b3;
-      }
-    }
-  
-    .current-time {
-      margin-right: 10px;
-    }
-  
-    .duration {
-      margin-left: 10px;
+    justify-content: center;
+    flex: 1;
+    width: 100%;
+
+  }
+
+  .button-play-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .skip-btn,
+  .play-stop-btn {
+    background: transparent;
+    border: none;
+    color: $spotify-gray;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    mat-icon {
+      font-size: 24px;
     }
   }
-  
+
+  .current-time,
+  .duration {
+    font-size: 14px;
+    color: $spotify-gray;
+  }
+
+  .mat-mdc-slider {
+    width: 80%;
+    max-width: 600px;
+    --mdc-slider-handle-color: $spotify-gray;
+    --mdc-slider-focus-handle-color: $spotify-light;
+    --mdc-slider-active-track-color: #1db954;
+    --mdc-slider-inactive-track-color: $spotify-gray;
+    --mat-slider-hover-state-layer-color: rgba($spotify-gray, 0.35);
+    --mat-slider-focus-state-layer-color: rgba($spotify-light, 0.3);
+  }
+
+  .slider {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  .current-time {
+    margin-right: 10px;
+  }
+
+  .duration {
+    margin-left: 10px;
+  }
+}
+
+.mainDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 20px;
+  width: 200px;
+
+
+  @media (max-width: 800px) {
+    flex: 3;
+    min-width: auto;
+    padding-right: 10px;
+  }
+}
+
+.author {
+  cursor: pointer;
+}
+
+.songName {
+  color: $spotify-light;
+  font-size: 16px;
+}
+
+img {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+}
+.songDetails{
+  display: flex;
+  flex-direction: row;
+}
+.playbarContainer{
+  display: flex;
+  flex-direction: column;
+}
+.buttonsContainer{
+  display: flex;
+  flex-direction: row;
+}

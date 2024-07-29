@@ -17,6 +17,7 @@ export class DisplayListComponent implements OnInit {
   songList: Song[] = [];
   currentSong!: Song;
   errorMessage: string | null = null;
+  artists: string[] = [];
   filteredItems: Song[] = [];
   searchTerm: string = '';
   // unlinkedIcon: string = 'https://logowik.com/content/uploads/images/like-heart2255.logowik.com.webp';
@@ -35,6 +36,7 @@ export class DisplayListComponent implements OnInit {
       songs => {
         this.songList = songs;
         this.filteredItems = this.songList;
+        
         this.initializeLikes();
         this.initializePlaylistButtons();
       },
@@ -146,6 +148,14 @@ export class DisplayListComponent implements OnInit {
     this.songService.getSelectedAlbum(song);
   }
 
+  onArtistClick(artist:string): void {
+    this.router.navigate(['/artist', artist]);
+    this.songService.getSelectedArtist(artist);
+    console.log(artist);
+  }
+  splitArtist(authors:string):string[]{
+    return this.songService.splitArtistAndFt(authors);
+  }
   onPlayListClick(){
     const currentEmail = this.activatedRoute.snapshot.paramMap.get('email');
     if (!currentEmail) {
@@ -156,11 +166,6 @@ export class DisplayListComponent implements OnInit {
     // this.logInService.getSongs(currentEmail);
   }
 
-  onArtistClick(song: Song): void {
-    this.router.navigate(['/artist', song.author]);
-    this.songService.getSelectedArtist(song);
-  }
-
   initializeLikes() {
     const currentEmail = this.activatedRoute.snapshot.paramMap.get('email');
     if (currentEmail) {
@@ -169,7 +174,7 @@ export class DisplayListComponent implements OnInit {
       });
     }
   }
-
+    
   initializePlaylistButtons() {
     const currentEmail = this.activatedRoute.snapshot.paramMap.get('email');
   

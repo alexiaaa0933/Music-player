@@ -26,7 +26,12 @@
   {
     "Name": "salut",
     "Email": "sss@mail",
-    "Password": "Asdfghjkl9",
+    "Password": "Asdfghjkl9"
+  },
+  {
+    "Name": "dan",
+    "Email": "dan@f",
+    "Password": "dan123Dan",
     "Playlist": []
   },
   {

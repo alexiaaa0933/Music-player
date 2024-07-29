@@ -109,14 +109,26 @@ namespace Backend.Controllers
 
             return Ok(albumFiles);
         }
-
+        private List<Song> getArtistSongs(string artist)
+        {
+            var albumFiles = _songs.Where(song => song.Author != null &&
+           song.Author.Contains(artist, StringComparison.OrdinalIgnoreCase))
+           .ToList();
+            return albumFiles;
+        }
+        [HttpGet("artist-top-5/{artist}")]
+        public IActionResult getTop5Artist(string artist)
+        {
+            var top5=getArtistSongs(artist).OrderByDescending(song=>song.Likes).Take(5).ToList();
+            return Ok(top5);
+        }
         [HttpGet("top-liked")]
         public IActionResult GetTopLikedSongs()
         {
             var topLikedSongs = _songs.OrderByDescending(song => song.Likes).Take(5).ToList();
             return Ok(topLikedSongs);
         }
-
+        
         [HttpPost("like/{fileName}")]
         public IActionResult LikeSong(string fileName, [FromBody] string userEmail)
         {

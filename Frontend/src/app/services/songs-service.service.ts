@@ -12,6 +12,9 @@ export class SongsServiceService {
   private readonly baseUrl ="https://localhost:7078";
   private selectedAlbumS:BehaviorSubject<Song|null>;
   public selectedAlbumO:Observable<Song|null>
+
+  private selectedArtistS:BehaviorSubject<Song|null>;
+  public selectedArtistO:Observable<Song|null>
   readonly httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',
@@ -21,6 +24,9 @@ export class SongsServiceService {
   constructor(private httpClient:HttpClient) { 
     this.selectedAlbumS = new BehaviorSubject<Song|null>(null);
     this.selectedAlbumO = this.selectedAlbumS.asObservable();
+
+    this.selectedArtistS=new BehaviorSubject<Song|null>(null);
+    this.selectedArtistO=this.selectedArtistS.asObservable();
   }
 
   getSongs(): Observable<Song[]> {
@@ -47,5 +53,13 @@ export class SongsServiceService {
   getSelectedAlbum(select:Song)
   {
     this.selectedAlbumS.next(select); 
+  }
+  getSongsByAuthor(author:string):Observable<Song[]>
+  {
+    return this.httpClient.get<Song[]>(this.baseUrl+"/api/Music/byAuthor/"+author,this.httpOptions);
+  }
+  getSelectedArtist(select:Song)
+  {
+    this.selectedArtistS.next(select);
   }
 }

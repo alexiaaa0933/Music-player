@@ -139,6 +139,8 @@ export class DisplayListComponent implements OnInit {
       });
     }
   }
+    this.songService.getSelectedArtist(song);
+
 
   getImageUrl(song: Song): string {
     return song.isLiked ? this.likedImageUrl : this.unlikedImageUrl;

@@ -1,0 +1,128 @@
+$spotify-dark: #121212;
+$spotify-light: #FFFFFF;
+$spotify-gray: #B3B3B3;
+.artist-banner{
+  
+    color:white;
+   background-image:url("https://c4.wallpaperflare.com/wallpaper/713/510/372/post-malone-music-hd-4k-wallpaper-preview.jpg") ;
+    background-size:cover;
+    
+    background-repeat: no-repeat;
+    background-position: center;
+   display: flex;
+   
+    max-width: 100%;
+    flex-direction: column;
+   margin: auto;
+   padding: 10%;
+   max-height: 30%;
+    p{
+        padding:0%;
+        margin:0;
+    }
+ .verified-line{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    p {
+        color: white;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+
+ } 
+ .verified-icon{
+    color: rgb(10, 165, 236);
+    font-size: 20px;
+    margin-right: 5px;
+ }
+.artist-name{
+    font-size: 3em;
+    font-weight: bold;
+    color:white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+} 
+}
+.songDisplay {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+    color: $spotify-gray;
+    background-color: $spotify-dark;
+    text-align: left;
+    font-family:  'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 14px;
+    overflow: hidden;
+    padding-left: 2%;
+    height: 85px;
+  
+    &:hover {
+      background-color: #2a2a2a;
+      border-radius: 5px;
+    }
+  
+    @media (max-width: 800px) {
+      padding: 10px;
+      flex-wrap: nowrap;
+      overflow-x: auto; 
+    }
+  }
+  .author{
+    
+    width: 200px;
+}
+.mainDetails {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding:2%;
+    width: 400px;
+  
+    
+    @media (max-width: 800px) {
+      flex: 3;
+      min-width: auto;
+      padding-right: 10px;
+    }
+  }
+  
+  .songName
+  {
+    color: $spotify-light;
+    font-size: 16px;
+  }
+  
+  .album {
+    flex: 2;
+    color: $spotify-gray;
+    text-align: left;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  
+    @media (max-width: 800px) {
+      display: none;
+    }
+  }
+  
+  .creationDate {
+    flex: 1;
+    color: $spotify-gray;
+    text-align: left;
+  
+    @media (max-width: 800px) {
+      display: none;
+    }
+  }
+  
+  .duration {
+    flex:1; 
+    text-align: right;
+    align-items: flex-end;
+    color: $spotify-gray;
+    padding:2%;
+  
+   
+  }

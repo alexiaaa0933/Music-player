@@ -3,6 +3,8 @@ import { Song } from '../../Interfaces/Song';
 import { SongsServiceService } from '../../services/songs-service.service';
 import { AudioPlayerComponent } from '../audio-player/audio-player.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { LoginServiceService } from '../../services/login-service.service';
 
 @Component({
   selector: 'app-display-list',
@@ -17,12 +19,14 @@ export class DisplayListComponent implements OnInit {
   errorMessage: string | null = null;
   filteredItems: Song[] = [];
   searchTerm: string = '';
-  // unlikedImageUrl: string = 'https://logowik.com/content/uploads/images/like-heart2255.logowik.com.webp';
-  // likedImageUrl: string = 'https://cdn.vectorstock.com/i/500p/58/88/flat-heart-icon-vector-30695888.jpg';
-  unlikedImageUrl: string = '♡';
-  likedImageUrl: string = '♥';
+  // unlinkedIcon: string = 'https://logowik.com/content/uploads/images/like-heart2255.logowik.com.webp';
+  // likedIcon: string = 'https://cdn.vectorstock.com/i/500p/58/88/flat-heart-icon-vector-30695888.jpg';
+  unlinkedIcon: string = '♡';
+  likedIcon: string = '♥';
+  addSongInPlaylistIcon: string = '+';
+  removeSongFromPlaylistIcon: string = '-';
 
-  constructor(private songService: SongsServiceService, private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private songService: SongsServiceService, private router: Router, private activatedRoute: ActivatedRoute, private logInService: LoginServiceService) { }
 
   ngOnInit(): void {
     this.songService.getSongs().subscribe(
@@ -30,6 +34,7 @@ export class DisplayListComponent implements OnInit {
         this.songList = songs;
         this.filteredItems = this.songList;
         this.initializeLikes();
+        this.initializePlaylistButtons();
       },
       error => {
         this.errorMessage = error.error?.message;
@@ -88,8 +93,8 @@ export class DisplayListComponent implements OnInit {
 
     const currentEmail = this.activatedRoute.snapshot.paramMap.get('email');
     if (!currentEmail) {
-        console.error('Current email not found in route parameters');
-        return;
+      console.error('Current email not found in route parameters');
+      return;
     }
 
     const originalIsLiked = song.isLiked;
@@ -98,15 +103,22 @@ export class DisplayListComponent implements OnInit {
     this.updateSongInLists(song);
 
     this.songService.likeSong(song.fileName, currentEmail).subscribe(
-        updatedSong => {
-          updatedSong.isLiked = song.isLiked;
-            this.updateSongInLists(updatedSong);
-        },
-        error => {
-            console.error('Error liking song', error);
-            song.isLiked = originalIsLiked;
-            this.updateSongInLists(song);
-        }
+      updatedSong => {
+        updatedSong.isLiked = song.isLiked;
+        this.updateSongInLists(updatedSong);
+        this.logInService.updateSongInUserPlaylist(currentEmail, updatedSong).subscribe(
+          () => {
+            console.log('Song updated in user playlist successfully');
+          },
+          updateError => {
+            console.error('Error updating song in user playlist', updateError);
+          }
+        );      },
+      error => {
+        console.error('Error liking song', error);
+        song.isLiked = originalIsLiked;
+        this.updateSongInLists(song);
+      }
     );
   }
 
@@ -115,7 +127,7 @@ export class DisplayListComponent implements OnInit {
     if (songIndex !== -1) {
       this.songList[songIndex] = updatedSong;
     }
-    
+
     const filteredIndex = this.filteredItems.findIndex(s => s.fileName === updatedSong.fileName);
     if (filteredIndex !== -1) {
       this.filteredItems[filteredIndex] = updatedSong;
@@ -127,8 +139,19 @@ export class DisplayListComponent implements OnInit {
     this.songService.getSelectedAlbum(song);
   }
 
+  onPlayListClick(){
+    const currentEmail = this.activatedRoute.snapshot.paramMap.get('email');
+    if (!currentEmail) {
+      console.error('Current email not found in route parameters');
+      return;
+    }
+    this.router.navigate(['/playlist', currentEmail]);
+    // this.logInService.getSongs(currentEmail);
+  }
+
   onArtistClick(song: Song): void {
     this.router.navigate(['/artist', song.author]);
+    this.songService.getSelectedArtist(song);
   }
 
   initializeLikes() {
@@ -139,10 +162,55 @@ export class DisplayListComponent implements OnInit {
       });
     }
   }
-    this.songService.getSelectedArtist(song);
 
+  initializePlaylistButtons() {
+    const currentEmail = this.activatedRoute.snapshot.paramMap.get('email');
+  
+    if (!currentEmail) {
+      console.error('Current email not found in route parameters');
+      return;
+    }
+  
+    this.logInService.getSongs(currentEmail).subscribe(
+      userSongs => {
+        this.songList.forEach(song => {
+          const isInPlaylist = userSongs.some(userSong => userSong.fileName === song.fileName);
+          song.isAddedToPlaylist = isInPlaylist;
+        });
+      },
+      error => {
+        this.errorMessage = error.error?.message || 'Error retrieving songs';
+      }
+    );
+  }
+  
 
   getImageUrl(song: Song): string {
-    return song.isLiked ? this.likedImageUrl : this.unlikedImageUrl;
+    return song.isLiked ? this.likedIcon : this.unlinkedIcon;
+  }
+
+  addSongToUserPlaylist(newSong: Song): void {
+    const currentEmail = this.activatedRoute.snapshot.paramMap.get('email');
+
+    if (!currentEmail) {
+      console.error('Current email not found in route parameters');
+      return;
+    }
+
+    newSong.isAddedToPlaylist = !newSong.isAddedToPlaylist;
+    this.updateSongInLists(newSong);
+
+    this.logInService.addSongToUserPlaylist(currentEmail, newSong).subscribe(
+      (response) => {
+        console.log('Song added to playlist successfully', response);
+      },
+      (error) => {
+        console.error('Error adding song to playlist', error);
+      }
+    );
+  }
+
+  getPlaylistButtonIcon(song: Song): string {
+    return song.isAddedToPlaylist ? this.removeSongFromPlaylistIcon : this.addSongInPlaylistIcon;
   }
 }

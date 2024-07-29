@@ -9,5 +9,6 @@ export interface Song
   fileName: string;
   likes: number,
   usersWhoLiked: string[],
-  isLiked: boolean
+  isLiked: boolean,
+  isAddedToPlaylist: boolean;
 }

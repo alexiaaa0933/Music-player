@@ -147,4 +147,21 @@ img {
   color: #f1f1f1;
   font-size: xx-large;
   cursor: pointer;
+  margin-left: 5%;
+}
+.add-playlist-button{
+  background: none;
+  color: #f1f1f1;
+  font-size: xx-large;
+  cursor: pointer;
+  border: none;
+  margin-right: 5%;
+}
+.add-playlist-button:hover{
+  border-radius: 50%;
+  background-color: #424242;
+}
+.like-button:hover{
+  border-radius: 50%;
+  background-color: #424242;
 }

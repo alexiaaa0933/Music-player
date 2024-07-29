@@ -17,6 +17,7 @@
 
         <button class="like-button" (click)="onLikeSong(song, $event)">{{getImageUrl(song)}}</button>
         <p class="creationDate">{{ song.likes }}</p>
+        <button class="add-playlist-button" (click)="addSongToUserPlaylist(song)">{{getPlaylistButtonIcon(song)}}</button>
         <p class="duration">{{ getFormattedDuration(song.duration) }}</p>
       </div>
     </div>

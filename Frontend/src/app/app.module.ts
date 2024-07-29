@@ -17,6 +17,7 @@ import { AlbumPageComponent } from './components/album-page/album-page.component
 import { ArtistTop5Component } from './components/artist-top-5/artist-top-5.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
+import { PlaylistComponent } from './components/playlist/playlist.component';
 
 @NgModule({
   declarations:
@@ -27,7 +28,8 @@ import { LoginComponent } from './components/login/login.component';
       AlbumPageComponent,
       ArtistTop5Component,
       RegisterComponent,
-      LoginComponent
+      LoginComponent,
+      PlaylistComponent
     ],
   imports: [
     BrowserModule,

@@ -11,67 +11,65 @@ import { Router } from '@angular/router';
 })
 export class ArtistTop5Component implements OnInit {
   @ViewChild('audioPlayer') audioPlayerComponent!: AudioPlayerComponent;
-artistSongs: Song[] = [];
+  artistSongs: Song[] = [];
+  popularSongs:Song[]=[];
+  currentSong!: Song;
+
+  artist:string|null = '';
   
-currentSong!: Song;
-selectedArtist: Song | null = null;
-
-
-playAlbum():void {
-  if(this.artistSongs.length>0)
-  {
-    this.playSong(this.artistSongs[0]);
-  }
+  playTop5(): void {
+    if (this.artistSongs.length > 0) {
+      this.playSong(this.artistSongs[0]);
+    }
   }
 
-playSong(song: Song): void {
-  this.currentSong = song;
-  this.audioPlayerComponent.currentSong = song;
-  this.audioPlayerComponent.loadSong(song.fileName);
-}
-
-onSongChanged(song: Song): void {
-  this.currentSong = song;
-}
-
-getNextSong(): Song | null {
-  const index = this.artistSongs.indexOf(this.currentSong) + 1;
-  return index < this.artistSongs.length ? this.artistSongs[index] : null;
-}
-
-getPreviousSong(): Song | null {
-  const index = this.artistSongs.indexOf(this.currentSong) - 1;
-  return index >= 0 ? this.artistSongs[index] : null;
-}
-
-onNextSongRequested(): void {
-  const nextSong = this.getNextSong();
-  if (nextSong) {
-    this.playSong(nextSong);
-  }
-}
-
-onPreviousSongRequested(): void {
-  const previousSong = this.getPreviousSong();
-  if (previousSong) {
-    this.playSong(previousSong);
-  }}
-constructor(private songService: SongsServiceService, private router: Router) { }
-
-ngOnInit(): void {
-  this.songService.selectedArtistO.subscribe(artist => this.selectedArtist = artist)
-
-  if (this.selectedArtist?.author) {
-    this.songService.getSongsByAuthor(this.selectedArtist.author).subscribe(x => this.artistSongs = x);
+  playSong(song: Song): void {
+    this.currentSong = song;
+    this.audioPlayerComponent.currentSong = song;
+    this.audioPlayerComponent.loadSong(song.fileName);
   }
 
- 
-}
+  onSongChanged(song: Song): void {
+    this.currentSong = song;
+  }
+
+  getNextSong(): Song | null {
+    const index = this.artistSongs.indexOf(this.currentSong) + 1;
+    return index < this.artistSongs.length ? this.artistSongs[index] : null;
+  }
+
+  getPreviousSong(): Song | null {
+    const index = this.artistSongs.indexOf(this.currentSong) - 1;
+    return index >= 0 ? this.artistSongs[index] : null;
+  }
+
+  onNextSongRequested(): void {
+    const nextSong = this.getNextSong();
+    if (nextSong) {
+      this.playSong(nextSong);
+    }
+  }
+
+  onPreviousSongRequested(): void {
+    const previousSong = this.getPreviousSong();
+    if (previousSong) {
+      this.playSong(previousSong);
+    }
+  }
+  constructor(private songService: SongsServiceService, private router: Router) { }
+
+  ngOnInit(): void {
+    this.songService.selectedArtistO.subscribe(artist=>this.artist=artist);
+    if (this.artist !== null) {
+
+      this.songService.getTop5Songs(this.artist).subscribe(songs => this.popularSongs = songs);
+    }
+  }
 
 
-getFormattedDuration(duration: number):string {
-  const minutes = Math.floor(duration / 60);
-  const seconds = duration % 60;
-  return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-}
+  getFormattedDuration(duration: number): string {
+    const minutes = Math.floor(duration / 60);
+    const seconds = duration % 60;
+    return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
 }

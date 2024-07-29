@@ -4,19 +4,28 @@
         <mat-icon class="verified-icon">verified</mat-icon>
         <p>Verified Artist</p>
     </div>
-    <p class="artist-name">{{selectedArtist?.author}}</p>
+    <p class="artist-name">{{artist}}</p>
 
 
 </div>
-<div *ngFor="let song of artistSongs; let i = index " class="songDisplay" (click)="playSong(song)">
+<div class="button-banner" (click)="playTop5()">
+    <button mat-button class="play-btn" >
+        <mat-icon>play_circled</mat-icon>
+    </button>
+    <p class="phrase">PLAY </p>
+    
+</div>
+<p class="popular"> Popular</p>
+
+<div *ngFor="let song of popularSongs; let i = index " class="songDisplay" (click)="playSong(song)">
     <p class="index">{{i+1}}</p>
     <img src={{song.imageUrl}}>
     <div class="mainDetails">
         <span class="songName">{{song.title}}</span>
         <span class="author">{{song.author}}</span>
     </div>
-
-
+    
+    <p class="creationDate">{{ song.likes }}</p>
     <p class="duration">{{getFormattedDuration(song.duration)}}</p>
 </div>
 <app-audio-player #audioPlayer [currentSong]="currentSong" (songChanged)="onSongChanged($event)"

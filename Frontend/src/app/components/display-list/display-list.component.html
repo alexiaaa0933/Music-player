@@ -9,7 +9,10 @@
         <img [src]="song.imageUrl" (click)="playSong(song)">
         <div class="mainDetails">
           <span class="songName">{{ song.title }}</span>
-          <span class="author" (click)="onArtistClick(song)">{{ song.author }}</span>
+          <span class="author"> 
+           <ng-container *ngFor="let artist of splitArtist(song.author)">
+                <span (click)="onArtistClick(artist)">{{ artist }}</span>
+           </ng-container></span>
         </div>
         <p class="album" (click)="onAlbumClick(song)">{{ song.album }}</p>
         <p class="creationDate">{{ song.creationDate | date: 'mediumDate' }}</p>

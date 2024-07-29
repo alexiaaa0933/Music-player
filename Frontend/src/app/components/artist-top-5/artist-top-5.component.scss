@@ -4,17 +4,14 @@ $spotify-gray: #B3B3B3;
 .artist-banner{
   
     color:white;
-   background-image:url("https://c4.wallpaperflare.com/wallpaper/713/510/372/post-malone-music-hd-4k-wallpaper-preview.jpg") ;
-    background-size:cover;
-    
-    background-repeat: no-repeat;
-    background-position: center;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,255,154,1) 0%, rgba(76,172,130,1) 0%, rgba(2,0,36,1) 66%);
    display: flex;
    
     max-width: 100%;
     flex-direction: column;
    margin: auto;
-   padding: 10%;
+   padding: 5%;
    max-height: 30%;
     p{
         padding:0%;
@@ -110,7 +107,7 @@ $spotify-gray: #B3B3B3;
   .creationDate {
     flex: 1;
     color: $spotify-gray;
-    text-align: left;
+    text-align: right;
   
     @media (max-width: 800px) {
       display: none;
@@ -126,3 +123,50 @@ $spotify-gray: #B3B3B3;
   
    
   }
+  .button-banner{
+    display: flex;
+    align-items: center;
+    background-color: $spotify-dark;
+    color: $spotify-light;
+   padding:0;
+   margin: 0;
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  
+    cursor: pointer;
+    &:hover{
+      background-color: #2a2a2a;
+    }
+  }
+  .play-btn{
+    background: transparent;
+    border: none;
+    mat-icon {
+      font-size: 30px;
+      color:$spotify-light;
+      width: fit-content;
+      height: fit-content; 
+      padding: 10%;
+
+    }
+  
+  }
+  .play-btn:hover{
+    background-color: transparent
+  }
+  .phrase{
+    font-size: 1em;
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color:$spotify-light;
+    
+  }
+  .popular{
+    font-size: 1.5em;
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color:$spotify-light;
+    margin: 0;
+    padding: 2%;
+  }
+ 

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Song } from '../Interfaces/Song';
+import { P } from '@angular/cdk/keycodes';
 
 
 @Injectable({
@@ -13,8 +14,9 @@ export class SongsServiceService {
   private selectedAlbumS:BehaviorSubject<Song|null>;
   public selectedAlbumO:Observable<Song|null>
 
-  private selectedArtistS:BehaviorSubject<Song|null>;
-  public selectedArtistO:Observable<Song|null>
+  private selectedArtistS:BehaviorSubject<string|null>;
+  public selectedArtistO:Observable<string|null>;
+
   readonly httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',
@@ -25,8 +27,10 @@ export class SongsServiceService {
     this.selectedAlbumS = new BehaviorSubject<Song|null>(null);
     this.selectedAlbumO = this.selectedAlbumS.asObservable();
 
-    this.selectedArtistS=new BehaviorSubject<Song|null>(null);
+    this.selectedArtistS=new BehaviorSubject<string|null>(null);
     this.selectedArtistO=this.selectedArtistS.asObservable();
+
+   
   }
 
   getSongs(): Observable<Song[]> {
@@ -58,8 +62,35 @@ export class SongsServiceService {
   {
     return this.httpClient.get<Song[]>(this.baseUrl+"/api/Music/byAuthor/"+author,this.httpOptions);
   }
-  getSelectedArtist(select:Song)
+  getSelectedArtist(select:string)
   {
+    
     this.selectedArtistS.next(select);
+    
+  }
+  getTop5Songs(author:string):Observable<Song[]>
+  {
+    return this.httpClient.get<Song[]>(this.baseUrl+"/api/Music/artist-top-5/"+author,this.httpOptions);
+  }
+  splitArtistAndFt(artist:string)
+  {
+    if(artist.includes("featuring"))
+    {
+      artist=artist.replace("featuring",",");
+    }
+    if(artist.includes("feat"))
+    {
+      artist=artist.replace("feat",",");
+    }
+    if(artist.includes("ft"))
+    {
+      artist=artist.replace("ft",",");
+    }
+    if(artist.includes("and")&&artist!=="Tones and I")
+    {
+      artist=artist.replace("and",",");
+    }
+    let artists=artist.split(",");
+    return artists;
   }
 }

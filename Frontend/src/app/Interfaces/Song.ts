@@ -8,5 +8,6 @@ export interface Song
   imageUrl: string,
   fileName: string;
   likes: number,
-  usersWhoLiked: string[]
+  usersWhoLiked: string[],
+  isLiked: boolean
 }

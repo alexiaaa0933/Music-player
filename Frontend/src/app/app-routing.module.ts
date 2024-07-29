@@ -31,8 +31,13 @@ const routes: Routes = [
 },
 {
   path: "",
-  component: DisplayListComponent
-}];
+  component: LoginComponent
+},
+{
+  path: '**',
+  component: LoginComponent,
+  pathMatch: 'full'
+},];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -1,26 +1,27 @@
 <div class="page-container">
   <div class="songListContainer">
     <div class="searchContainer">
-      <input type="text" class="search" [(ngModel)]="searchTerm" (input)="onSearch()"
-        placeholder="What do you want to play?" />
+      <input type="text" class="search" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="What do you want to play?" />
     </div>
     <div *ngIf="filteredItems.length > 0">
       <div *ngFor="let song of filteredItems; let i = index" class="songDisplay">
         <p class="index">{{ i + 1 }}</p>
-        <img src='https://i.pinimg.com/564x/94/fe/aa/94feaab7c012474e771e8b281a234a1d.jpg' (click)="playSong(song)">
+        <img [src]="song.imageUrl" (click)="playSong(song)">
         <div class="mainDetails">
           <span class="songName">{{ song.title }}</span>
           <span class="author" (click)="onArtistClick(song)">{{ song.author }}</span>
         </div>
         <p class="album" (click)="onAlbumClick(song)">{{ song.album }}</p>
         <p class="creationDate">{{ song.creationDate | date: 'mediumDate' }}</p>
-        <button (click)="onLikeSong(song, $event)">Like</button>
-        <p class="creationDate">{{song.likes}}</p>
+        <!-- <img [src]="getImageUrl(song)" (click)="onLikeSong(song, $event)"> -->
+
+        <button class="like-button" (click)="onLikeSong(song, $event)">{{getImageUrl(song)}}</button>
+        <p class="creationDate">{{ song.likes }}</p>
         <p class="duration">{{ getFormattedDuration(song.duration) }}</p>
       </div>
     </div>
     <div *ngIf="errorMessage" class="errorMessage">
-      <p><br><br><br><br><br><br>{{errorMessage}}</p>
+      <p><br><br><br><br><br><br>{{ errorMessage }}</p>
     </div>
   </div>
   <app-audio-player #audioPlayer [currentSong]="currentSong" (songChanged)="onSongChanged($event)"

@@ -19,8 +19,8 @@ export class DisplayListComponent implements OnInit {
   searchTerm: string = '';
   // unlikedImageUrl: string = 'https://logowik.com/content/uploads/images/like-heart2255.logowik.com.webp';
   // likedImageUrl: string = 'https://cdn.vectorstock.com/i/500p/58/88/flat-heart-icon-vector-30695888.jpg';
-  unlikedImageUrl: string = '♡';
-  likedImageUrl: string = '♥';
+  unlikedIcon: string = 'favorite_border';
+  likedIcon: string = 'favorite';
 
   constructor(private songService: SongsServiceService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
@@ -53,14 +53,18 @@ export class DisplayListComponent implements OnInit {
     this.currentSong = song;
   }
 
-  getNextSong(): Song | null {
+  getNextSong(): Song {
     const index = this.filteredItems.indexOf(this.currentSong) + 1;
-    return index < this.filteredItems.length ? this.filteredItems[index] : null;
+    if (index === this.filteredItems.length)
+      return this.filteredItems[0];
+    return this.filteredItems[index];
   }
 
-  getPreviousSong(): Song | null {
+  getPreviousSong(): Song {
     const index = this.filteredItems.indexOf(this.currentSong) - 1;
-    return index >= 0 ? this.filteredItems[index] : null;
+    if (index === -1)
+      return this.filteredItems[this.filteredItems.length - 1];
+    return this.filteredItems[index];
   }
 
   onNextSongRequested(): void {
@@ -88,8 +92,8 @@ export class DisplayListComponent implements OnInit {
 
     const currentEmail = this.activatedRoute.snapshot.paramMap.get('email');
     if (!currentEmail) {
-        console.error('Current email not found in route parameters');
-        return;
+      console.error('Current email not found in route parameters');
+      return;
     }
 
     const originalIsLiked = song.isLiked;
@@ -98,15 +102,15 @@ export class DisplayListComponent implements OnInit {
     this.updateSongInLists(song);
 
     this.songService.likeSong(song.fileName, currentEmail).subscribe(
-        updatedSong => {
-          updatedSong.isLiked = song.isLiked;
-            this.updateSongInLists(updatedSong);
-        },
-        error => {
-            console.error('Error liking song', error);
-            song.isLiked = originalIsLiked;
-            this.updateSongInLists(song);
-        }
+      updatedSong => {
+        updatedSong.isLiked = song.isLiked;
+        this.updateSongInLists(updatedSong);
+      },
+      error => {
+        console.error('Error liking song', error);
+        song.isLiked = originalIsLiked;
+        this.updateSongInLists(song);
+      }
     );
   }
 
@@ -115,7 +119,7 @@ export class DisplayListComponent implements OnInit {
     if (songIndex !== -1) {
       this.songList[songIndex] = updatedSong;
     }
-    
+
     const filteredIndex = this.filteredItems.findIndex(s => s.fileName === updatedSong.fileName);
     if (filteredIndex !== -1) {
       this.filteredItems[filteredIndex] = updatedSong;
@@ -129,6 +133,7 @@ export class DisplayListComponent implements OnInit {
 
   onArtistClick(song: Song): void {
     this.router.navigate(['/artist', song.author]);
+    this.songService.getSelectedArtist(song);
   }
 
   initializeLikes() {
@@ -139,10 +144,9 @@ export class DisplayListComponent implements OnInit {
       });
     }
   }
-    this.songService.getSelectedArtist(song);
-
 
   getImageUrl(song: Song): string {
-    return song.isLiked ? this.likedImageUrl : this.unlikedImageUrl;
+    return song.isLiked ? this.likedIcon : this.unlikedIcon;
   }
+
 }

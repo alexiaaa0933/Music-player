@@ -1,0 +1,80 @@
+  .registration-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  .main-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #005994;
+  }
+  
+  .registration-box {
+    background-color: #191414;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+  }
+  
+  .logo {
+    width: 120px;
+    margin-bottom: 20px;
+  }
+  
+  .nav {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .nav li {
+    display: inline;
+  }
+  
+  .nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 15px;
+    width: 80%;
+  }
+  
+  button {
+    background-color: #005994;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  button:hover {
+    background-color: #287fba;
+  }
+  .error-text{
+    color: #fff;
+  }
+  

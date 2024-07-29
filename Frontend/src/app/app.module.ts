@@ -15,6 +15,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { HttpClientModule } from '@angular/common/http';
 import { AlbumPageComponent } from './components/album-page/album-page.component';
 import { ArtistTop5Component } from './components/artist-top-5/artist-top-5.component';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: 
@@ -23,7 +25,9 @@ import { ArtistTop5Component } from './components/artist-top-5/artist-top-5.comp
     DisplayListComponent,
     AudioPlayerComponent,
     AlbumPageComponent,
-    ArtistTop5Component
+    ArtistTop5Component,
+    RegisterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

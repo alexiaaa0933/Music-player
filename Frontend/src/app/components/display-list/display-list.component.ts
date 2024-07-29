@@ -4,7 +4,7 @@ import { SongsServiceService } from '../../services/songs-service.service';
 
 import { AudioPlayerComponent } from '../audio-player/audio-player.component';
 
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-display-list',
@@ -21,7 +21,7 @@ export class DisplayListComponent implements OnInit {
   filteredItems: Song[] = [];
   searchTerm: string = '';
 
-  constructor(private songService: SongsServiceService, private router: Router) { }
+  constructor(private songService: SongsServiceService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.songService.getSongs().subscribe(
@@ -188,7 +188,7 @@ export class DisplayListComponent implements OnInit {
   onNextSongRequested(): void {
     const nextSong = this.getNextSong();
     if (nextSong) {
-      this.playSong(nextSong);
+      this.playSong(nextSong); 
     }
   }
 
@@ -208,15 +208,26 @@ export class DisplayListComponent implements OnInit {
   onLikeSong(song: Song, event: Event): void {
     event.stopPropagation();
 
-    this.songService.likeSong(song.fileName).subscribe(updatedSong => {
-      const index = this.songList.findIndex(s => s.fileName === song.fileName);
-      if (index !== -1) {
-        this.songList[index] = updatedSong;
-      }
-    }, error => {
-      console.error('Error liking song', error);
-    });
-  }
+    const currentEmail = this.activatedRoute.snapshot.paramMap.get('email');
+    if (!currentEmail) {
+        console.error('Current email not found in route parameters');
+        return;
+    }
+
+    this.songService.likeSong(song.fileName, currentEmail).subscribe(
+        updatedSong => {
+            const index = this.songList.findIndex(s => s.fileName === song.fileName);
+            if (index !== -1) {
+                this.songList[index] = updatedSong;
+            }
+        },
+        error => {
+            console.error('Error liking song', error);
+        }
+    );
+}
+
+  
 
   onAlbumClick(song: Song): void {
 

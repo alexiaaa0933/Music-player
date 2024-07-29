@@ -35,16 +35,17 @@ export class SongsServiceService {
     });
   }
 
-  likeSong(fileName: string): Observable<Song> {
-    return this.httpClient.post<Song>(`${this.baseUrl}/api/Music/like/${fileName}`, {}, this.httpOptions);
+  likeSong(fileName: string, userEmail: string): Observable<Song> {
+    return this.httpClient.post<Song>(`${this.baseUrl}/api/Music/like/${fileName}`, JSON.stringify(userEmail), this.httpOptions);
   }
+  
+
   
   getSongsByAlbum(album: string): Observable<Song[]> {
     return this.httpClient.get<Song[]>(this.baseUrl + "/api/Music/byAlbum/"+album, this.httpOptions);
   }
   getSelectedAlbum(select:Song)
   {
-    this.selectedAlbumS.next(select);
-
+    this.selectedAlbumS.next(select); 
   }
 }

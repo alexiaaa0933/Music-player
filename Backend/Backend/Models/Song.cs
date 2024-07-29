@@ -10,6 +10,6 @@
         public string Genre { get; set; }
         public int Likes { get; set; }
         public int Duration { get; set; } 
-
+        public List<string> UsersWhoLiked { get; set; } = new List<string>();
     }
 }

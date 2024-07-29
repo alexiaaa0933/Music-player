@@ -21,10 +21,12 @@ export class DisplayListComponent implements OnInit {
   searchTerm: string = '';
   // unlinkedIcon: string = 'https://logowik.com/content/uploads/images/like-heart2255.logowik.com.webp';
   // likedIcon: string = 'https://cdn.vectorstock.com/i/500p/58/88/flat-heart-icon-vector-30695888.jpg';
-  unlinkedIcon: string = '♡';
-  likedIcon: string = '♥';
   addSongInPlaylistIcon: string = '+';
   removeSongFromPlaylistIcon: string = '-';
+  // unlikedImageUrl: string = 'https://logowik.com/content/uploads/images/like-heart2255.logowik.com.webp';
+  // likedImageUrl: string = 'https://cdn.vectorstock.com/i/500p/58/88/flat-heart-icon-vector-30695888.jpg';
+  unlikedIcon: string = 'favorite_border';
+  likedIcon: string = 'favorite';
 
   constructor(private songService: SongsServiceService, private router: Router, private activatedRoute: ActivatedRoute, private logInService: LoginServiceService) { }
 
@@ -58,14 +60,18 @@ export class DisplayListComponent implements OnInit {
     this.currentSong = song;
   }
 
-  getNextSong(): Song | null {
+  getNextSong(): Song {
     const index = this.filteredItems.indexOf(this.currentSong) + 1;
-    return index < this.filteredItems.length ? this.filteredItems[index] : null;
+    if (index === this.filteredItems.length)
+      return this.filteredItems[0];
+    return this.filteredItems[index];
   }
 
-  getPreviousSong(): Song | null {
+  getPreviousSong(): Song {
     const index = this.filteredItems.indexOf(this.currentSong) - 1;
-    return index >= 0 ? this.filteredItems[index] : null;
+    if (index === -1)
+      return this.filteredItems[this.filteredItems.length - 1];
+    return this.filteredItems[index];
   }
 
   onNextSongRequested(): void {
@@ -113,7 +119,8 @@ export class DisplayListComponent implements OnInit {
           updateError => {
             console.error('Error updating song in user playlist', updateError);
           }
-        );      },
+        );     
+      },
       error => {
         console.error('Error liking song', error);
         song.isLiked = originalIsLiked;
@@ -186,7 +193,7 @@ export class DisplayListComponent implements OnInit {
   
 
   getImageUrl(song: Song): string {
-    return song.isLiked ? this.likedIcon : this.unlinkedIcon;
+    return song.isLiked ? this.likedIcon : this.unlikedIcon;
   }
 
   addSongToUserPlaylist(newSong: Song): void {

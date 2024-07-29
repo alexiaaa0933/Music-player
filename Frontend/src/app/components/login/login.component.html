@@ -17,7 +17,7 @@
             <input [type]="passwordFieldType" id="password" name="password" placeholder="Password"
               [(ngModel)]="loginData.password" required minlength="8" #password="ngModel">
             <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
-              <i [ngClass]="passwordFieldType === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+              <span [ngClass]="passwordFieldType === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash'"></span>
             </button>
           </div>
           <div *ngIf="password.invalid && (password.dirty || password.touched)">

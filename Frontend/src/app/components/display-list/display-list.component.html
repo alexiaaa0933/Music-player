@@ -1,21 +1,31 @@
 <div class="page-container">
   <div class="songListContainer">
     <div class="searchContainer">
-      <input type="text" class="search" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="What do you want to play?" />
+      <input type="text" class="search" [(ngModel)]="searchTerm" (input)="onSearch()"
+        placeholder="What do you want to play?" />
+        <button mat-button >
+          <mat-icon mat-list-icon (click)="onNextSongRequested()" class="archive">archive</mat-icon>
+        </button>
     </div>
     <div *ngIf="filteredItems.length > 0">
       <div *ngFor="let song of filteredItems; let i = index" class="songDisplay">
         <p class="index">{{ i + 1 }}</p>
-        <img [src]="song.imageUrl" (click)="playSong(song)">
+        <img src="https://i.pinimg.com/564x/94/fe/aa/94feaab7c012474e771e8b281a234a1d.jpg" (click)="playSong(song)">
         <div class="mainDetails">
           <span class="songName">{{ song.title }}</span>
           <span class="author" (click)="onArtistClick(song)">{{ song.author }}</span>
         </div>
         <p class="album" (click)="onAlbumClick(song)">{{ song.album }}</p>
         <p class="creationDate">{{ song.creationDate | date: 'mediumDate' }}</p>
-        <!-- <img [src]="getImageUrl(song)" (click)="onLikeSong(song, $event)"> -->
+        <button mat-button class="like-button">
+          <div *ngIf="!song.isLiked">
+            <mat-icon mat-list-icon (click)="onLikeSong(song, $event)">favorite_border</mat-icon>
+          </div>
+          <div *ngIf="song.isLiked">
+            <mat-icon mat-list-icon (click)="onLikeSong(song, $event)">{{getImageUrl(song)}}</mat-icon>
+          </div>
+        </button>
 
-        <button class="like-button" (click)="onLikeSong(song, $event)">{{getImageUrl(song)}}</button>
         <p class="creationDate">{{ song.likes }}</p>
         <button class="add-playlist-button" (click)="addSongToUserPlaylist(song)">{{getPlaylistButtonIcon(song)}}</button>
         <p class="duration">{{ getFormattedDuration(song.duration) }}</p>
@@ -25,6 +35,7 @@
       <p><br><br><br><br><br><br>{{ errorMessage }}</p>
     </div>
   </div>
-  <app-audio-player #audioPlayer [currentSong]="currentSong" (songChanged)="onSongChanged($event)"
-    (requestNextSong)="onNextSongRequested()" (requestPreviousSong)="onPreviousSongRequested()"></app-audio-player>
+  <app-audio-player #audioPlayer [currentSong]="currentSong" [listOfSongs]="filteredItems"
+    (songChanged)="onSongChanged($event)" (requestNextSong)="onNextSongRequested()"
+    (requestPreviousSong)="onPreviousSongRequested()"></app-audio-player>
 </div>

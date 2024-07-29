@@ -1,1 +1,24 @@
-<p>artist-top-5 works!</p>
+<div class="artist-banner" >
+<img class="artist-poster"  >
+    <div class="verified-line">
+        <mat-icon class="verified-icon">verified</mat-icon>
+        <p>Verified Artist</p>
+    </div>
+    <p class="artist-name">{{selectedArtist?.author}}</p>
+
+
+</div>
+<div *ngFor="let song of artistSongs; let i = index " class="songDisplay" (click)="playSong(song)">
+    <p class="index">{{i+1}}</p>
+    <img src={{song.imageUrl}}>
+    <div class="mainDetails">
+        <span class="songName">{{song.title}}</span>
+        <span class="author">{{song.author}}</span>
+    </div>
+
+
+    <p class="duration">{{getFormattedDuration(song.duration)}}</p>
+</div>
+<app-audio-player #audioPlayer [currentSong]="currentSong" (songChanged)="onSongChanged($event)"
+(requestNextSong)="onNextSongRequested()" (requestPreviousSong)="onPreviousSongRequested()"
+    ></app-audio-player>

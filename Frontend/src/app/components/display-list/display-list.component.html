@@ -4,7 +4,7 @@
       <input type="text" class="search" [(ngModel)]="searchTerm" (input)="onSearch()"
         placeholder="What do you want to play?" />
         <button mat-button >
-          <mat-icon mat-list-icon (click)="onNextSongRequested()" class="archive">archive</mat-icon>
+          <mat-icon mat-list-icon (click)="onPlayListClick()" class="archive">archive</mat-icon>
         </button>
     </div>
     <div *ngIf="filteredItems.length > 0">

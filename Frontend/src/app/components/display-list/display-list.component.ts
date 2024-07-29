@@ -20,12 +20,8 @@ export class DisplayListComponent implements OnInit {
   artists: string[] = [];
   filteredItems: Song[] = [];
   searchTerm: string = '';
-  // unlinkedIcon: string = 'https://logowik.com/content/uploads/images/like-heart2255.logowik.com.webp';
-  // likedIcon: string = 'https://cdn.vectorstock.com/i/500p/58/88/flat-heart-icon-vector-30695888.jpg';
-  addSongInPlaylistIcon: string = '+';
-  removeSongFromPlaylistIcon: string = '-';
-  // unlikedImageUrl: string = 'https://logowik.com/content/uploads/images/like-heart2255.logowik.com.webp';
-  // likedImageUrl: string = 'https://cdn.vectorstock.com/i/500p/58/88/flat-heart-icon-vector-30695888.jpg';
+  addSongInPlaylistIcon: string = 'add_circle';
+  removeSongFromPlaylistIcon: string = 'remove_circle_outline';
   unlikedIcon: string = 'favorite_border';
   likedIcon: string = 'favorite';
 

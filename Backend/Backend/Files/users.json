@@ -5,17 +5,16 @@
     "Password": "Asdfghjkl9",
     "Playlist": [
       {
-        "FileName": "Post Malone, Swae Lee - Sunflower (Spider-Man_ Into the Spider-Verse).mp3",
-        "CreationDate": "2024-07-29T19:01:01.6704071+03:00",
-        "Album": "Spider-Man: Into the Spider-Verse (Soundtrack)",
-        "Title": "Sunflower",
-        "Author": "Post Malone and Swae Lee",
-        "Genre": "Hip-Hop",
-        "Likes": 5,
-        "Duration": 161,
+        "FileName": "Connect-R - Vara Nu Dorm  Official Video - Copy.mp3",
+        "CreationDate": "2024-07-29T22:50:41.8391781+03:00",
+        "Album": "Album 1",
+        "Title": "Vara nu dorm",
+        "Author": "Connect-R",
+        "Genre": "Pop",
+        "Likes": 26,
+        "Duration": 207,
         "UsersWhoLiked": [
-          "dan@f",
-          "a@a.a"
+          "string"
         ]
       }
     ]

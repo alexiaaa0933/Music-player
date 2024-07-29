@@ -63,8 +63,12 @@ input[type="password"] {
   width: 90%;
 }
 
-.password-container {
+.password-box {
+  display: flex;
+  flex-direction: row;
   position: relative;
+  width: 100%;
+  max-width: 900px;
 }
 
 .toggle-password {
@@ -77,7 +81,6 @@ input[type="password"] {
   cursor: pointer;
   color: #6d6d6d;
   z-index: 1; 
-
 }
 
 .toggle-password:focus {

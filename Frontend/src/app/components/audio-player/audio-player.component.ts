@@ -13,6 +13,7 @@ export class AudioPlayerComponent implements OnInit {
   @Output() requestPreviousSong: EventEmitter<void> = new EventEmitter();
   
   @Input() currentSong!: Song;
+  @Input() listOfSongs!:Song[];
 
   buttonPlay: boolean = true;
   duration: number = 60;
@@ -109,5 +110,20 @@ export class AudioPlayerComponent implements OnInit {
 
   playPreviousSong(): void {
     this.requestPreviousSong.emit();
+  }
+
+  shuffleSongs(): void {
+    console.log(this.listOfSongs);
+    let currentIndex = this.listOfSongs.length, randomIndex;
+
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      [this.listOfSongs[currentIndex], this.listOfSongs[randomIndex]] = [this.listOfSongs[randomIndex], this.listOfSongs[currentIndex]];
+    }
+    console.log(this.listOfSongs);
+    if (this.listOfSongs.length > 0) {
+      this.playNextSong();
+    }
   }
 }

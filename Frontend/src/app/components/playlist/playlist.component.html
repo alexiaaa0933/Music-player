@@ -1,0 +1,34 @@
+<div class="album-banner">
+    <img class="album-poster" >
+    <div class="album-info">
+        <p class="album-title">Playlist</p>
+        <div class="author-songs">
+            <p class="album-artist">{{currentUser?.name}}</p>
+            <p class="album-artist">•︎</p>
+            <p class="album-artist">{{albumSongs.length}} songs, </p>
+            &nbsp;
+            <p class="album-artist">{{getAllDuration()}}</p>
+        </div>
+    </div>
+</div>
+<div class="button-banner" (click)="playAlbum()">
+    <button mat-button class="play-btn" >
+        <mat-icon>play_circled</mat-icon>
+    </button>
+    <p class="play-phrase">Play album </p>
+
+</div>
+<div *ngFor="let song of albumSongs; let i = index " class="songDisplay" (click)="playSong(song)">
+    <p class="index">{{i+1}}</p>
+    <img src={{song.imageUrl}}>
+    <div class="mainDetails">
+        <span class="songName">{{song.title}}</span>
+        <span class="author">{{song.author}}</span>
+    </div>
+
+
+    <p class="duration">{{getFormattedDuration(song.duration)}}</p>
+</div>
+<app-audio-player #audioPlayer [currentSong]="currentSong" (songChanged)="onSongChanged($event)"
+(requestNextSong)="onNextSongRequested()" (requestPreviousSong)="onPreviousSongRequested()"
+    ></app-audio-player>

@@ -6,6 +6,7 @@ import { AlbumPageComponent } from './components/album-page/album-page.component
 import { ArtistTop5Component } from './components/artist-top-5/artist-top-5.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
+import { PlaylistComponent } from './components/playlist/playlist.component';
 
 const routes: Routes = [
   { path: 'player/:fileName', component: AudioPlayerComponent },
@@ -16,6 +17,10 @@ const routes: Routes = [
 {
   path:"album/:name",
   component: AlbumPageComponent
+},
+{
+  path:"playlist/:name",
+  component: PlaylistComponent
 },
 {
   path:"artist/:name",

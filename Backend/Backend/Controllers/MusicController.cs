@@ -38,13 +38,14 @@ namespace Backend.Controllers
                     {
                         FileName = Path.GetFileName(file),
                         CreationDate = System.IO.File.GetCreationTime(file),
-                        Album = tagFile.Tag.Album,
+                        Album = tagFile.Tag.Album.Split('|')[0],
                         Title = tagFile.Tag.Title,
                         Author = tagFile.Tag.FirstPerformer ?? string.Join(", ", tagFile.Tag.Performers),
                         Genre = tagFile.Tag.FirstGenre,
                         Duration = (int)tagFile.Properties.Duration.TotalSeconds,
                         Likes = (int)tagFile.Tag.TrackCount,
-                        UsersWhoLiked = usersWhoLiked
+                        UsersWhoLiked = usersWhoLiked,
+                        ImageURL = tagFile.Tag.Album.Split('|')[1]
                     });
                 }
             }

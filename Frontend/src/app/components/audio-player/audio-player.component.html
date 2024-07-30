@@ -1,7 +1,7 @@
 <div class="media-footer">
   <div class="button-play-label">
     <div *ngIf="currentSong" class="songDetails">
-      <img src='https://i.pinimg.com/564x/94/fe/aa/94feaab7c012474e771e8b281a234a1d.jpg'>
+      <img src={{currentSong.imageURL}}>
       <div class="mainDetails">
         <span class="songName">{{ currentSong.title }}</span>
         <span class="author">{{ currentSong.author }}</span>
@@ -33,6 +33,8 @@
         <span class="duration" matTooltip="{{ durationToDisplay }}" matTooltipPosition="after">
           {{ durationToDisplay }}
         </span>
+
+        
       </div>
     </div>
   </div>

@@ -1,4 +1,6 @@
-﻿namespace Backend.Models
+﻿using Newtonsoft.Json;
+
+namespace Backend.Models
 {
     public class Song
     {
@@ -9,7 +11,9 @@
         public string Author { get; set; }
         public string Genre { get; set; }
         public int Likes { get; set; }
-        public int Duration { get; set; } 
+        public int Duration { get; set; }
+        [JsonProperty("imageUrl")]
+        public string ImageURL { get; set; }
         public List<string> UsersWhoLiked { get; set; } = new List<string>();
     }
 }

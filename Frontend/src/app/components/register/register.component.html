@@ -1,7 +1,7 @@
 <div class="main-container">
   <div class="registration-container">
     <div class="registration-box">
-      <img src='https://i.pinimg.com/564x/94/fe/aa/94feaab7c012474e771e8b281a234a1d.jpg' alt="Spotify Logo" class="logo">
+      <img class="logo-image" src ="app/assets/logo.png">
       <form #registrationForm="ngForm" (ngSubmit)="onSubmit(registrationForm)">
         <div class="form-group">
           <input type="text" id="name" name="name" placeholder="Name" [(ngModel)]="formData.name" required pattern="^[a-zA-Z\s]*$" minlength="3" #name="ngModel">

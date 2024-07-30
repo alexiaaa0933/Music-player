@@ -35,6 +35,7 @@ export class DisplayListComponent implements OnInit {
         
         this.initializeLikes();
         this.initializePlaylistButtons();
+        console.log( this.filteredItems);
       },
       error => {
         this.errorMessage = error.error?.message;

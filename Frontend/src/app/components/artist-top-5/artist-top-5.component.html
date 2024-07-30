@@ -19,7 +19,7 @@
 
 <div *ngFor="let song of popularSongs; let i = index " class="songDisplay" (click)="playSong(song)">
     <p class="index">{{i+1}}</p>
-    <img src={{song.imageUrl}}>
+    <img src={{song.imageURL}}>
     <div class="mainDetails">
         <span class="songName">{{song.title}}</span>
         <span class="author">{{song.author}}</span>

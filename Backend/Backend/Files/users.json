@@ -42,5 +42,38 @@
     "Email": "a@a.a",
     "Password": "Aaaaaa12",
     "Playlist": []
+  },
+  {
+    "Name": "Alex",
+    "Email": "new@mail.com",
+    "Password": "Asdfghjkl9",
+    "Playlist": [
+      {
+        "FileName": "Connect-R  @Smiley - Rita  Official Video.mp3",
+        "CreationDate": "2024-07-30T11:40:23.5036779+03:00",
+        "Album": "Single",
+        "Title": "Rita",
+        "Author": "Connect-R",
+        "Genre": "Pop",
+        "Likes": 1,
+        "Duration": 176,
+        "UsersWhoLiked": [
+          "new@mail.com"
+        ]
+      },
+      {
+        "FileName": "Connect-R - Angela  Official Video.mp3",
+        "CreationDate": "2024-07-30T11:40:23.5066686+03:00",
+        "Album": "Single",
+        "Title": "Angela",
+        "Author": "Connect-R",
+        "Genre": "Pop",
+        "Likes": 1,
+        "Duration": 196,
+        "UsersWhoLiked": [
+          "new@mail.com"
+        ]
+      }
+    ]
   }
 ]

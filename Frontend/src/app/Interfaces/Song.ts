@@ -5,7 +5,7 @@ export interface Song
   album: string,
   creationDate: Date,
   duration: number,
-  imageUrl: string,
+  imageURL: string,
   fileName: string;
   likes: number,
   usersWhoLiked: string[],

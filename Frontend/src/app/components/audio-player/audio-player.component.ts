@@ -23,6 +23,8 @@ export class AudioPlayerComponent implements OnInit {
   value: number = 0;
   interval: any;
   audio = new Audio();
+  volume: number = 1; 
+
 
   constructor(private songService: SongsServiceService) { }
 
@@ -126,4 +128,8 @@ export class AudioPlayerComponent implements OnInit {
       this.playNextSong();
     }
   }
+  onVolumeChange(event: any): void {
+    this.audio.volume = this.volume;
+  }
+  
 }

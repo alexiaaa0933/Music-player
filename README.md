@@ -46,7 +46,8 @@ To create an application that provides a seamless music playback experience, fea
    - Clicking a song starts playback.
    - Provides smooth transitions for play, pause, and seeking actions.
   
-     ![image](https://github.com/user-attachments/assets/79096c6e-7c2c-498c-91d9-638dac18e386)
+![image](https://github.com/user-attachments/assets/6de1be44-6803-4b2a-8051-c81be9be085b)
+
 
 #### UI/UX
 - Clean and intuitive interface.
@@ -69,24 +70,26 @@ To create an application that provides a seamless music playback experience, fea
 ### User Registration
 - Users can create an account or sign in.
 
-![image](https://github.com/user-attachments/assets/e8c5788b-cde6-49a5-a178-476c74fa94ed)
-  
-![image](https://github.com/user-attachments/assets/0e899865-a138-479a-b136-9dd45c0e8fca)
+![Screenshot 2024-08-02 125731](https://github.com/user-attachments/assets/bfb753a2-c814-4b41-a071-55c4dbff7d48)
+
+![Screenshot 2024-08-02 125742](https://github.com/user-attachments/assets/16598ba8-a905-4179-ab35-7e0a83726ffd)
 
 
 ### Playlist Management
 - Users can create and manage playlists.
 - Allows adding and removing songs.
 
-  ![image](https://github.com/user-attachments/assets/7b9906c7-ff71-4114-b948-198751ad83ba)
+![image](https://github.com/user-attachments/assets/ab0d199d-6e11-45dd-8444-1e54342c0f30)
   *we can add a song to the playlist using the "+" button or remove it using "-"
 
-  ![image](https://github.com/user-attachments/assets/e3f4ea93-3bd1-4341-afad-29d9720749d5)
+![image](https://github.com/user-attachments/assets/50c9b74f-4215-4d4e-9b56-b3e7e3b05636)
+
 
 ### Search Bar
 - Provides a way to search for your favorite song title.
 
-![image](https://github.com/user-attachments/assets/ebfbc636-6dbd-48eb-9c1f-504f3ab316c6)
+![image](https://github.com/user-attachments/assets/c89eb711-b82d-45d8-9001-89efea6fdd28)
+
 
   
 ### Shuffle Songs

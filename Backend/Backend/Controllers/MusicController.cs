@@ -1,8 +1,10 @@
-﻿using System.Xml;
-using Backend.Exceptions;
-using Backend.Models;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using Business.Services;
+using DataAccess.Entities;
+using Business.Interfaces;
+using Business.Exceptions;
+using System.IO;
+
 
 namespace Backend.Controllers
 {
@@ -10,51 +12,16 @@ namespace Backend.Controllers
     [Route("api/[controller]")]
     public class MusicController : ControllerBase
     {
-        private readonly string _musicDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Music");
-
-        private static List<Song> _songs = new List<Song>();
-
-        public MusicController()
+        private readonly ISongService _songService;
+        public MusicController(ISongService songService)
         {
-            InitializeSongs();
+            _songService = songService;
         }
-
-        private void InitializeSongs()
-        {
-            var files = Directory.GetFiles(_musicDirectory, "*.mp3");
-
-            foreach (var file in files)
-            {
-                var tagFile = TagLib.File.Create(file);
-                var existingSong = _songs.FirstOrDefault(s => s.FileName == Path.GetFileName(file));
-
-                if (existingSong == null)
-                {
-                    var usersWhoLiked = tagFile.Tag.Comment != null
-                        ? tagFile.Tag.Comment.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList()
-                        : new List<string>();
-
-                    _songs.Add(new Song
-                    {
-                        FileName = Path.GetFileName(file),
-                        CreationDate = System.IO.File.GetCreationTime(file),
-                        Album = tagFile.Tag.Album.Split('|')[0],
-                        Title = tagFile.Tag.Title,
-                        Author = tagFile.Tag.FirstPerformer ?? string.Join(", ", tagFile.Tag.Performers),
-                        Genre = tagFile.Tag.FirstGenre,
-                        Duration = (int)tagFile.Properties.Duration.TotalSeconds,
-                        Likes = (int)tagFile.Tag.TrackCount,
-                        UsersWhoLiked = usersWhoLiked,
-                        ImageURL = tagFile.Tag.Album.Split('|')[1]
-                    });
-                }
-            }
-        }
-
 
         [HttpGet("list")]
         public IActionResult ListFiles()
         {
+            var _songs = _songService.GetAll();
             if (_songs.Count == 0)
             {
                 throw new NoAvailableSongsException();
@@ -65,126 +32,49 @@ namespace Backend.Controllers
         [HttpGet("stream/{fileName}")]
         public IActionResult StreamFile(string fileName)
         {
-            var filePath = Path.Combine(_musicDirectory, fileName);
-            if (!System.IO.File.Exists(filePath))
-            {
-                throw new SongNotFoundException(fileName);
-            }
-
-            var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            var stream = _songService.GetFileStream(fileName);
             return new FileStreamResult(stream, "audio/mpeg")
             {
                 EnableRangeProcessing = true
             };
         }
 
-
         [HttpGet("byAuthor/{author}")]
-
         public IActionResult getSongsByAuthor(string author)
         {
-            var authorFiles = _songs.Where(song => song.Author != null &&
-              song.Author.Contains(author, StringComparison.OrdinalIgnoreCase))
-              .ToList();
-
-            if (authorFiles.Count == 0)
-            {
-                throw new NoSongsByAuthorException(author);
-            }
-
+            var authorFiles = _songService.GetByAuthor(author);
             return Ok(authorFiles);
         }
 
         [HttpGet("byAlbum/{album}")]
-
         public IActionResult getSongsByAlbum(string album)
         {
-            var albumFiles = _songs.Where(song => song.Album != null &&
-             song.Album.Contains(album, StringComparison.OrdinalIgnoreCase))
-             .ToList();
-
-            if (albumFiles.Count == 0)
-            {
-                throw new NoSongsByAlbumException(album);
-            }
-
+            var albumFiles = _songService.GetByAlbum(album);
             return Ok(albumFiles);
         }
-        private List<Song> getArtistSongs(string artist)
+        private List<Song> getArtistSongs(string author)
         {
-            var albumFiles = _songs.Where(song => song.Author != null &&
-           song.Author.Contains(artist, StringComparison.OrdinalIgnoreCase))
-           .ToList();
-            return albumFiles;
+            return _songService.GetByAuthor(author);
         }
         [HttpGet("artist-top-5/{artist}")]
         public IActionResult getTop5Artist(string artist)
         {
-            var top5=getArtistSongs(artist).OrderByDescending(song=>song.Likes).Take(5).ToList();
+            var top5 = getArtistSongs(artist).OrderByDescending(song => song.Likes).Take(5).ToList();
             return Ok(top5);
         }
+
         [HttpGet("top-liked")]
         public IActionResult GetTopLikedSongs()
         {
-            var topLikedSongs = _songs.OrderByDescending(song => song.Likes).Take(5).ToList();
+            var topLikedSongs = _songService.GetTopLikedSongs();
             return Ok(topLikedSongs);
         }
-        
+
         [HttpPost("like/{fileName}")]
-        public IActionResult LikeSong(string fileName, [FromBody] string userEmail)
+        public void LikeSong(string fileName, [FromBody] string userEmail)
         {
-            var song = _songs.FirstOrDefault(s => s.FileName.Equals(fileName, System.StringComparison.OrdinalIgnoreCase));
-            if (song != null)
-            {
-                if (!song.UsersWhoLiked.Contains(userEmail))
-                {
-                    song.UsersWhoLiked.Add(userEmail);
-                    song.Likes++;
-                }
-                else
-                {
-                    song.UsersWhoLiked.Remove(userEmail);
-                    song.Likes--;
-                }
-
-                var updateResult = UpdateMetadataForSong(song);
-
-                if (!updateResult.IsSuccess)
-                {
-                    return StatusCode(500, updateResult.ErrorMessage);
-                }
-
-                return Ok(song);
-            }
-            else
-            {
-                throw new SongNotFoundException(fileName);
-            }
+           _songService.LikeSong(fileName, userEmail);
         }
-
-
-        private (bool IsSuccess, string ErrorMessage) UpdateMetadataForSong(Song song)
-        {
-            var filePath = Path.Combine(_musicDirectory, song.FileName);
-            if (System.IO.File.Exists(filePath))
-            {
-                try
-                {
-                    var file = TagLib.File.Create(filePath);
-                    file.Tag.TrackCount = (uint)song.Likes;
-                    file.Tag.Comment = string.Join(",", song.UsersWhoLiked);
-                    file.Save();
-                    return (true, string.Empty);
-                }
-                catch (Exception ex)
-                {
-                    return (false, $"Internal server error: {ex.Message}");
-                }
-            }
-            return (false, "Song file not found.");
-        }
-
-        
 
     }
 }

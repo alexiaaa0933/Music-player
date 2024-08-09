@@ -1,7 +1,7 @@
 ﻿using System.Net.Mime;
 using System.Net;
 using System.Text.Json;
-using Backend.Exceptions;
+using Business.Exceptions;
 
 namespace Backend.Middleware
 {

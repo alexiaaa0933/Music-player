@@ -1,5 +1,5 @@
 using Backend.Middleware;
-using Microsoft.AspNetCore.Diagnostics;
+using Business;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
 
 builder.Services.AddCors(
     options =>
@@ -19,6 +20,9 @@ builder.Services.AddCors(
                 .AllowAnyHeader());
     }
 );
+
+
+builder.Services.AddBusinessServices();
 
 builder.Services.AddSwaggerGen();
 

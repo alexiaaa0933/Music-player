@@ -1,0 +1,109 @@
+[
+  {
+    "Name": "Alex",
+    "Email": "mail@mail.com",
+    "Password": "Asdfghjkl9",
+    "Playlist": [
+      {
+        "FileName": "Connect-R - Vara Nu Dorm  Official Video - Copy.mp3",
+        "CreationDate": "2024-07-29T22:50:41.8391781+03:00",
+        "Album": "Album 1",
+        "Title": "Vara nu dorm",
+        "Author": "Connect-R",
+        "Genre": "Pop",
+        "Likes": 26,
+        "Duration": 207,
+        "imageUrl": null,
+        "UsersWhoLiked": [
+          "string"
+        ]
+      }
+    ]
+  },
+  {
+    "Name": "salut",
+    "Email": "alex@mail.com",
+    "Password": "Asdfghjkl9",
+    "Playlist": []
+  },
+  {
+    "Name": "salut",
+    "Email": "sss@mail",
+    "Password": "Asdfghjkl9",
+    "Playlist": []
+  },
+  {
+    "Name": "dan",
+    "Email": "dan@f",
+    "Password": "dan123Dan",
+    "Playlist": []
+  },
+  {
+    "Name": "Alexia",
+    "Email": "a@a.a",
+    "Password": "Aaaaaa12",
+    "Playlist": [
+      {
+        "FileName": "Connect-R - Angela  Official Video.mp3",
+        "CreationDate": "2024-08-07T08:42:05.9549134+03:00",
+        "Album": "Single",
+        "Title": "Angela",
+        "Author": "Connect-R",
+        "Genre": "Pop",
+        "Likes": 0,
+        "Duration": 196,
+        "imageUrl": "https://lh3.googleusercontent.com/RyVhcoNHWhvlQnk36yQvqLYYOfN8DRDXP519UCWb4wS7-j1HTLImAsVk6zrXYCflNiIiPqMiVYXF0_8R2w=w544-h544-l90-rj",
+        "UsersWhoLiked": []
+      },
+      {
+        "FileName": "Connect-R - Tren de Noapte  Official Video.mp3",
+        "CreationDate": "2024-08-07T08:42:06.0217083+03:00",
+        "Album": "Single",
+        "Title": "Tren de noapte",
+        "Author": "Connect-R",
+        "Genre": "Pop",
+        "Likes": 1,
+        "Duration": 222,
+        "imageUrl": "https://lh3.googleusercontent.com/RyVhcoNHWhvlQnk36yQvqLYYOfN8DRDXP519UCWb4wS7-j1HTLImAsVk6zrXYCflNiIiPqMiVYXF0_8R2w=w544-h544-l90-rj",
+        "UsersWhoLiked": [
+          "a@a.a"
+        ]
+      }
+    ]
+  },
+  {
+    "Name": "Alex",
+    "Email": "new@mail.com",
+    "Password": "Asdfghjkl9",
+    "Playlist": [
+      {
+        "FileName": "Connect-R  @Smiley - Rita  Official Video.mp3",
+        "CreationDate": "2024-07-30T11:40:23.5036779+03:00",
+        "Album": "Single",
+        "Title": "Rita",
+        "Author": "Connect-R",
+        "Genre": "Pop",
+        "Likes": 1,
+        "Duration": 176,
+        "imageUrl": null,
+        "UsersWhoLiked": [
+          "new@mail.com"
+        ]
+      },
+      {
+        "FileName": "Connect-R - Angela  Official Video.mp3",
+        "CreationDate": "2024-07-30T11:40:23.5066686+03:00",
+        "Album": "Single",
+        "Title": "Angela",
+        "Author": "Connect-R",
+        "Genre": "Pop",
+        "Likes": 1,
+        "Duration": 196,
+        "imageUrl": null,
+        "UsersWhoLiked": [
+          "new@mail.com"
+        ]
+      }
+    ]
+  }
+]

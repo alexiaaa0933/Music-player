@@ -2,6 +2,6 @@
 {
     public class SongNotFoundException : Exception
     {
-        public SongNotFoundException(string fileName) : base($"Song with name: '{fileName}' was not found.") { }
+        public SongNotFoundException() : base($"This song was not found.") { }
     }
 }

@@ -2,61 +2,82 @@
 using DataAccess.Entities;
 using DataAccess.Interfaces;
 using Business.Exceptions;
+using Business.Mappers;
+using AutoMapper;
+using Business.DTOs;
 
 namespace Business.Services
 {
     public class SongService : ISongService
     {
+        private IMapper _mapper;
         private ISongRepository _songRepository;
-        public SongService(ISongRepository songRepository)
+        public SongService(ISongRepository songRepository, IMapper mapper)
         {
             _songRepository = songRepository;
+            _mapper = mapper;
         }
 
-        public List<Song> GetAll()
+        public List<SongDTO> GetAll()
         {
             List<Song>? songs = _songRepository.GetAll();
             if (songs.Count == 0)
             {
                 throw new NoAvailableSongsException();
             }
-            return songs;
+            var songDTOs = new List<SongDTO>();
+            foreach (var song in songs)
+            {
+                songDTOs.Add(_mapper.Map<SongDTO>(song));
+            }
+            return songDTOs;
         }
 
-        public List<Song>? GetByAlbum(string album)
+        public List<SongDTO>? GetByAlbum(string album)
         {
             List<Song>? song = _songRepository.GetByAlbum(album);
-            if (song == null)
+            if (song == null || song.Count == 0)
             {
-                throw new NoSongsByAlbumException(album);
+                throw new NoSongsByAlbumException();
             }
-            return song;
+            var albumSongs = new List<SongDTO>();
+            foreach (var s in song)
+            {
+                albumSongs.Add(_mapper.Map<SongDTO>(s));
+            }
+            return albumSongs;
         }
 
-        public List<Song>? GetTopLikedSongs()
+        public List<SongDTO>? GetTopLikedSongs()
         {
-           var topLikedSongs =  _songRepository.GetAll().OrderByDescending(song => song.Likes).Take(5).ToList();
-           return topLikedSongs;
+            var topLikedSongs = _songRepository.GetAll().OrderByDescending(song => song.Likes).Take(5).ToList();
+            var topLikedSongsDTO = new List<SongDTO>();
+            foreach (var song in topLikedSongs)
+            {
+                topLikedSongsDTO.Add(_mapper.Map<SongDTO>(song));
+            }
+            return topLikedSongsDTO;
         }
 
-        public List<Song>? GetByAuthor(string author)
+        public List<SongDTO>? GetByAuthor(string author)
         {
             var songsByAuthor = _songRepository.GetByAuthor(author);
-            if (songsByAuthor == null)
+            if (songsByAuthor == null || songsByAuthor.Count == 0)
             {
                 throw new NoSongsByAuthorException(author);
             }
-            return songsByAuthor;
+            var songs = new List<SongDTO>();
+            foreach (var song in songsByAuthor)
+            {
+                songs.Add(_mapper.Map<SongDTO>(song));
+            }
+            return songs;
         }
 
-        public Song? GetByTitle(string title)
-        {
-            Song? song = _songRepository.GetByTitle(title);
-            return song;
-        }
 
-        public void Update(Song song)
+        public void Update(SongDTO songDto)
         {
+            var song = _mapper.Map<Song>(songDto);
             _songRepository.Update(song);
         }
 

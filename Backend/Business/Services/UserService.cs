@@ -1,4 +1,6 @@
 ﻿
+using AutoMapper;
+using Business.DTOs;
 using Business.Interfaces;
 using DataAccess.Entities;
 using DataAccess.Interfaces;
@@ -8,39 +10,48 @@ namespace Business.Services
     public class UserService: IUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IMapper _mapper;
+
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
-        public void Add(User user)
+        public void Add(UserDTO user)
         {
-            _userRepository.Add(user);
+            var userEntity = _mapper.Map<User>(user);
+            _userRepository.Add(userEntity);
         }
 
-        public void AddSongToUserPlaylist(string email, Song song)
+        public void AddSongToUserPlaylist(string email, SongDTO song)
         {
-            _userRepository.AddSongToUserPlaylist(email, song);
+            var songEntity = _mapper.Map<Song>(song);
+            _userRepository.AddSongToUserPlaylist(email, songEntity);
         }
 
-        public List<User> GetAll()
+        public List<UserDTO> GetAll()
         {
-            return _userRepository.GetAll();
+            var users = _userRepository.GetAll();
+            return _mapper.Map<List<UserDTO>>(users);
         }
 
-        public User? GetByEmail(string email)
+        public UserDTO? GetByEmail(string email)
         {
-            return _userRepository.GetByEmail(email);
+            var user = _userRepository.GetByEmail(email);
+            return _mapper.Map<UserDTO>(user);
         }
 
-        public List<Song> GetUserPlaylist(string email)
+        public List<SongDTO> GetUserPlaylist(string email)
         {
-            return _userRepository.GetUserPlaylist(email);
+            var songs = _userRepository.GetUserPlaylist(email);
+            return _mapper.Map<List<SongDTO>>(songs);
         }
 
-        public void UpdateSongInUserPlaylist(string email, Song song)
+        public void UpdateSongInUserPlaylist(string email, SongDTO song)
         {
-            _userRepository.UpdateSongInUserPlaylist(email, song);
+            var songEntity = _mapper.Map<Song>(song);
+            _userRepository.UpdateSongInUserPlaylist(email, songEntity);
         }
     }
 }

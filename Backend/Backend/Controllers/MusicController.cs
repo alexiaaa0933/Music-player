@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Business.Services;
-using DataAccess.Entities;
 using Business.Interfaces;
 using Business.Exceptions;
-using System.IO;
+using Business.DTOs;
 
 
 namespace Backend.Controllers
@@ -52,7 +50,7 @@ namespace Backend.Controllers
             var albumFiles = _songService.GetByAlbum(album);
             return Ok(albumFiles);
         }
-        private List<Song> getArtistSongs(string author)
+        private List<SongDTO> getArtistSongs(string author)
         {
             return _songService.GetByAuthor(author);
         }

@@ -1,4 +1,6 @@
-﻿using Business.Interfaces;
+﻿using AutoMapper;
+using Business.Interfaces;
+using Business.Mappers;
 using Business.Services;
 using DataAccess.Interfaces;
 using DataAccess.Repositories;
@@ -12,8 +14,11 @@ namespace Business
         {
             services.AddScoped<ISongService, SongService>();
             services.AddScoped<ISongRepository, SongRepository>();
+            services.AddAutoMapper(typeof(SongProfile));
+
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddAutoMapper(typeof(UserProfile));
         }
     }
 }

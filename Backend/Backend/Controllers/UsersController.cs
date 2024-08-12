@@ -1,8 +1,6 @@
-﻿using Business.Exceptions;
+﻿using Business.DTOs;
 using Business.Interfaces;
-using DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace Backend.Controllers
 {
@@ -38,7 +36,7 @@ namespace Backend.Controllers
         }
 
         [HttpPut("addUser")]
-        public IActionResult AddUser([FromBody] User newUser)
+        public IActionResult AddUser([FromBody] UserDTO newUser)
         {
 
             if (newUser == null || string.IsNullOrEmpty(newUser.Name) || string.IsNullOrEmpty(newUser.Email) || string.IsNullOrEmpty(newUser.Password))
@@ -58,7 +56,7 @@ namespace Backend.Controllers
 
 
         [HttpPost("addSongToUserPlaylist/{email}")]
-        public IActionResult AddSongToUserPlaylist(string email, [FromBody] Song newSong)
+        public IActionResult AddSongToUserPlaylist(string email, [FromBody] SongDTO newSong)
         {
             if (newSong == null)
             {
@@ -84,7 +82,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("updateSongInUserPlaylist/{email}")]
-        public IActionResult UpdateSongInUserPlaylist(string email, [FromBody] Song updatedSong)
+        public IActionResult UpdateSongInUserPlaylist(string email, [FromBody] SongDTO updatedSong)
         {
             if (updatedSong == null)
             {
@@ -98,7 +96,7 @@ namespace Backend.Controllers
 
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] User loginUser)
+        public IActionResult Login([FromBody] UserDTO loginUser)
         {
             var user = _userService.GetAll().FirstOrDefault(u => u.Email == loginUser.Email && u.Password == loginUser.Password);
             if (user == null)

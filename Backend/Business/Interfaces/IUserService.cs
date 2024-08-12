@@ -1,14 +1,14 @@
-﻿using DataAccess.Entities;
+﻿using Business.DTOs;
 
 namespace Business.Interfaces
 {
     public interface IUserService
     {
-        public List<User> GetAll();
-        public User? GetByEmail(string email);
-        public void Add(User user);
-        public void AddSongToUserPlaylist(string email, Song song);
-        public List<Song> GetUserPlaylist(string email);
-        public void UpdateSongInUserPlaylist(string email, Song song);
+        public List<UserDTO> GetAll();
+        public UserDTO? GetByEmail(string email);
+        public void Add(UserDTO user);
+        public void AddSongToUserPlaylist(string email, SongDTO song);
+        public List<SongDTO> GetUserPlaylist(string email);
+        public void UpdateSongInUserPlaylist(string email, SongDTO song);
     }
 }
